@@ -1,8 +1,14 @@
 name: Build RR Image
 
-# 手动触发编译:基于官方基础镜像,patch 入本仓库的改动,产出 rr-<VERSION>.img
+# 手动触发,或由 sync-upstream 在上游有改动时自动触发
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [upstream-changed]
+
+concurrency:
+  group: rr-build
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -40,18 +46,15 @@ jobs:
         run: |
           LOOPX=$(sudo losetup -fP --show rr-new.img)
           echo "loop: $LOOPX"
-          # RR 镜像通常 p1=EFI/GRUB, p3=内核(initrd/bzImage)
           for p in 1 2 3; do
             if [ -b "${LOOPX}p${p}" ]; then
               sudo mkdir -p /tmp/mnt/p${p}
               sudo mount "${LOOPX}p${p}" /tmp/mnt/p${p} 2>/dev/null || true
             fi
           done
-          # 写入 RR_VERSION
           if [ -d /tmp/mnt/p1 ]; then
             echo "${{ steps.ver.outputs.value }}" | sudo tee /tmp/mnt/p1/RR_VERSION >/dev/null
           fi
-          # 写入 i915 核显驱动源码与说明到 p3(供 DSM 编译用)
           if [ -d /tmp/mnt/p3 ]; then
             sudo mkdir -p /tmp/mnt/p3/i915-backports
             sudo cp -rf i915-backports/. /tmp/mnt/p3/i915-backports/ 2>/dev/null || true
