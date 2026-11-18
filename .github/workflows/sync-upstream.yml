@@ -27,15 +27,18 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Merge & push
+        env:
+          TARGET_BRANCH: "main"
         run: |
-          main="main"
-          git checkout "$main"
-          git reset --hard "origin/$main"
-          # 优先用同名分支 fast-forward,否则尝试上游默认分支
-          if git show-ref --verify --quiet "refs/remotes/upstream/$main"; then
-            git merge --ff-only "upstream/$main" || git merge --no-edit "upstream/$main"
+          BRANCH="$TARGET_BRANCH"
+          echo "本地分支: $BRANCH"
+          git checkout "$BRANCH"
+          git reset --hard "origin/$BRANCH"
+          # 优先用同名分支 fast-forward,否则用符号引用解析上游默认分支
+          if git show-ref --verify --quiet "refs/remotes/upstream/$BRANCH"; then
+            git merge --ff-only "upstream/$BRANCH" || git merge --no-edit "upstream/$BRANCH"
           else
             UP_HEAD=$(git symbolic-ref --short refs/remotes/upstream/HEAD | sed 's#upstream/##')
             git merge --no-edit "upstream/$UP_HEAD"
           fi
-          git push origin "$main"
+          git push origin "$BRANCH"
