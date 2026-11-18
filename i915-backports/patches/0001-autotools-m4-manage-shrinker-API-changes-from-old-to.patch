@@ -1,0 +1,89 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kanaka Raju Nayana <kanaka.raju.nayana@intel.com>
+Date: Wed, 8 Oct 2025 20:08:05 +0530
+Subject: [PATCH] autotools/m4: manage shrinker API changes from old to new
+ registration
+
+From KV 6.7 onwards, shrinker registration API changed from
+register_shrinker() to shrinker_alloc()/shrinker_register()/shrinker_free()
+in newer kernels.
+Use m4 macro to detect API availability and provide compatibility.
+
+v2:
+Fix Hunk failure
+
+Reference:
+    d35b5c98c1f1 drm/ttm: dynamically allocate the drm-ttm_pool shrinker
+
+Signed-off-by: Kanaka Raju Nayana <kanaka.raju.nayana@intel.com>
+Signed-off-by: Rachapalli Bandi Jagadeesh <jagadeesh.rachapalli.bandi@intel.com>
+Signed-off-by: Akanksha Hotta <akanksha.hotta@intel.com>
+---
+diff --git a/drivers/gpu/drm/ttm/ttm_pool.c b/drivers/gpu/drm/ttm/ttm_pool.c
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -128,7 +128,19 @@
+ 
+ static spinlock_t shrinker_lock;
+ static struct list_head shrinker_list;
++#ifdef BPM_SHRINKER_ALLOC_NOT_PRESENT
++static unsigned long ttm_pool_shrinker_count(struct shrinker *shrink,
++					      struct shrink_control *sc);
++static unsigned long ttm_pool_shrinker_scan(struct shrinker *shrink,
++					     struct shrink_control *sc);
++static struct shrinker mm_shrinker = {
++	.count_objects = ttm_pool_shrinker_count,
++	.scan_objects = ttm_pool_shrinker_scan,
++	.seeks = 1,
++};
++#else
+ static struct shrinker *mm_shrinker;
++#endif
+ static DECLARE_RWSEM(pool_shrink_rwsem);
+ 
+ /* Allocate pages of size 1 << order with the given gfp_flags */
+@@ -1321,9 +1333,15 @@
+ 	unsigned long count;
+ 
+ 	fs_reclaim_acquire(GFP_KERNEL);
++#ifdef BPM_SHRINKER_ALLOC_NOT_PRESENT
++	count = ttm_pool_shrinker_count(&mm_shrinker, &sc);
++	seq_printf(m, "%lu/%lu\n", count,
++		   ttm_pool_shrinker_scan(&mm_shrinker, &sc));
++#else
+ 	count = ttm_pool_shrinker_count(mm_shrinker, &sc);
+ 	seq_printf(m, "%lu/%lu\n", count,
+ 		   ttm_pool_shrinker_scan(mm_shrinker, &sc));
++#endif
+ 	fs_reclaim_release(GFP_KERNEL);
+ 
+ 	return 0;
+@@ -1371,6 +1389,9 @@
+ #endif
+ #endif
+ 
++#ifdef BPM_SHRINKER_ALLOC_NOT_PRESENT
++	register_shrinker(&mm_shrinker, "drm-ttm_pool");
++#else
+ 	mm_shrinker = shrinker_alloc(0, "drm-ttm_pool");
+ 	if (!mm_shrinker)
+ 		return -ENOMEM;
+@@ -1381,6 +1402,7 @@
+ 	mm_shrinker->seeks = 1;
+ 
+ 	shrinker_register(mm_shrinker);
++#endif
+ 
+ 	return 0;
+ }
+@@ -1402,6 +1424,10 @@
+ 		ttm_pool_type_fini(&global_dma32_uncached[i]);
+ 	}
+ 
++#ifdef BPM_SHRINKER_ALLOC_NOT_PRESENT
++	unregister_shrinker(&mm_shrinker);
++#else
+ 	shrinker_free(mm_shrinker);
++#endif
+ 	WARN_ON(!list_empty(&shrinker_list));
+ }

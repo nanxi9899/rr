@@ -1,0 +1,50 @@
+ifeq ($(CONFIG_BACKPORT_INTEGRATE),)
+# Since 2.6.21, try-run is available, but cc-disable-warning
+# was only added later, so we add it here ourselves:
+backport-cc-disable-warning = $(call try-run,\
+	$(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -W$(strip $(1)) -c -x c /dev/null -o "$$TMP",-Wno-$(strip $(1)))
+
+NOSTDINC_FLAGS += \
+	$(if $(CPTCFG_DRM_BACKPORT),-I$(M)/dsm/include/ -I$(M)/dsm/include/uapi/) \
+	-I$(M)/backport-include/ \
+	$(if $(CPTCFG_DRM_BACKPORT),-I$(M)/backport-ttm/include/) \
+	-I$(M)/include/ \
+	-I$(M)/include/uapi \
+	-include $(M)/backport-include/backport/backport.h \
+	$(if $(CPTCFG_DRM_BACKPORT),-include linux/cleanup.h -include linux/dmabuf-backport.h) \
+	$(call backport-cc-disable-warning, unused-but-set-variable) \
+	-DCPTCFG_BACKPORTS_RELEASE_TAG=\"$(BACKPORTS_RELEASE_TAG)\" \
+	-DCPTCFG_BASE_KERNEL_HEAD=\"$(BASE_KERNEL_HEAD)\" \
+	-DCPTCFG_KERNEL_NAME=\"$(KERNEL_NAME)\" \
+	-DCPTCFG_BASE_KERNEL_TAG=\"$(BASE_KERNEL_TAG)\" \
+	-DCPTCFG_TARGET_KERNEL_NAME=\"$(TARGET_KERNEL_NAME)\" \
+	-DCPTCFG_OOT_BACKPORT=\"$(OOT_BACKPORT)\" \
+	$(BACKPORTS_GIT_TRACKER_DEF) \
+	$(CFLAGS)
+
+export backport_srctree = $(M)
+else
+export BACKPORT_DIR = backports/
+export backport_srctree = $(BACKPORT_DIR)
+NOSTDINC_FLAGS += \
+	-I$(BACKPORT_DIR)/backport-include/ \
+	$(if $(CPTCFG_DRM_BACKPORT),-I$(BACKPORT_DIR)/backport-ttm/include/) \
+	-I$(BACKPORT_DIR)/include/ \
+	-I$(BACKPORT_DIR)/include/uapi \
+	-include $(BACKPORT_DIR)/backport-include/backport/backport.h \
+	$(CFLAGS)
+endif
+
+subdir-ccflags-y := $(call cc-option, -fno-pie) $(call cc-option, -no-pie)
+subdir-ccflags-y += $(call cc-option, -Wno-declaration-after-statement)
+
+subdir-ccflags-y += -std=gnu11
+
+obj-y += compat/
+
+# Intel graphics driver
+ifeq ($(CPTCFG_DRM_BACKPORT),y)
+obj-$(CPTCFG_DRM_BACKPORT) += drivers/gpu/drm/ dsm/
+else
+obj-$(CPTCFG_DRM_I915) += drivers/gpu/drm/i915/
+endif
