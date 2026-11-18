@@ -1,0 +1,83 @@
+name: Build RR Image
+
+# 手动触发编译:基于官方基础镜像,patch 入本仓库的改动,产出 rr-<VERSION>.img
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 安装依赖
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq qemu-utils parted dosfstools cpio xz-utils \
+            lz4 lzma bzip2 gzip zstd unzip curl jq
+
+      - name: 读取版本号
+        id: ver
+        run: echo "value=$(cat VERSION | tr -d '[:space:]')" >> $GITHUB_OUTPUT
+
+      - name: 下载官方基础镜像 26.9.0
+        run: |
+          curl -kL --retry 3 -o base.zip \
+            https://github.com/RROrg/rr/releases/download/26.9.0/rr-26.9.0.img.zip
+          unzip -o base.zip -d base
+          IMG=$(find base -name '*.img' | head -1)
+          echo "IMG=$IMG" >> $GITHUB_ENV
+          cp "$IMG" rr-new.img
+          echo "base image: $IMG ($(du -h "$IMG" | cut -f1))"
+
+      - name: 挂载镜像并写入改动
+        run: |
+          LOOPX=$(sudo losetup -fP --show rr-new.img)
+          echo "loop: $LOOPX"
+          # RR 镜像通常 p1=EFI/GRUB, p3=内核(initrd/bzImage)
+          for p in 1 2 3; do
+            if [ -b "${LOOPX}p${p}" ]; then
+              sudo mkdir -p /tmp/mnt/p${p}
+              sudo mount "${LOOPX}p${p}" /tmp/mnt/p${p} 2>/dev/null || true
+            fi
+          done
+          # 写入 RR_VERSION
+          if [ -d /tmp/mnt/p1 ]; then
+            echo "${{ steps.ver.outputs.value }}" | sudo tee /tmp/mnt/p1/RR_VERSION >/dev/null
+          fi
+          # 写入 i915 核显驱动源码与说明到 p3(供 DSM 编译用)
+          if [ -d /tmp/mnt/p3 ]; then
+            sudo mkdir -p /tmp/mnt/p3/i915-backports
+            sudo cp -rf i915-backports/. /tmp/mnt/p3/i915-backports/ 2>/dev/null || true
+          fi
+          sudo sync
+          for p in 1 2 3; do sudo umount /tmp/mnt/p${p} 2>/dev/null || true; done
+          sudo losetup --detach "$LOOPX"
+
+      - name: 打包镜像
+        run: |
+          zip -9 -j "rr-${{ steps.ver.outputs.value }}.img.zip" rr-new.img
+          sha256sum "rr-${{ steps.ver.outputs.value }}.img.zip" > sha256sum
+          ls -lh rr-*.zip
+
+      - name: 发布为 Release 资产
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "${{ steps.ver.outputs.value }}"
+          name: "RR ${{ steps.ver.outputs.value }} (i915 backports)"
+          body: |
+            RR 引导镜像 ${{ steps.ver.outputs.value }}
+            - 集成 Intel i915 GPU backports(DSM/PVE 核显驱动增强)
+            - 基于官方 26.9.0 基础镜像 patch 生成
+            > 仅供学习交流,严禁商用;修改引导有风险,请先测试。
+          files: |
+            rr-${{ steps.ver.outputs.value }}.img.zip
+            sha256sum
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
