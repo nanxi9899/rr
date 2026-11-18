@@ -1,6 +1,7 @@
 name: Sync Fork from Upstream
 
-# 每天北京时间 03:00 (UTC 19:00) 自动同步上游,也可手动触发
+# 每天北京时间 03:00 (UTC 19:00) 自动同步上游;
+# 若检测到上游有新提交,自动触发编译(通过 repository_dispatch)
 on:
   schedule:
     - cron: '0 19 * * *'
@@ -8,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   sync:
@@ -27,6 +29,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Merge & push
+        id: merge
         env:
           TARGET_BRANCH: "main"
         run: |
@@ -34,7 +37,7 @@ jobs:
           echo "本地分支: $BRANCH"
           git checkout "$BRANCH"
           git reset --hard "origin/$BRANCH"
-          # 优先用同名分支 fast-forward,否则用符号引用解析上游默认分支
+          BEFORE=$(git rev-parse HEAD)
           if git show-ref --verify --quiet "refs/remotes/upstream/$BRANCH"; then
             git merge --ff-only "upstream/$BRANCH" || git merge --no-edit "upstream/$BRANCH"
           else
@@ -42,3 +45,22 @@ jobs:
             git merge --no-edit "upstream/$UP_HEAD"
           fi
           git push origin "$BRANCH"
+          AFTER=$(git rev-parse HEAD)
+          if [ "$BEFORE" != "$AFTER" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "上游有新提交: $BEFORE -> $AFTER"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "已是最新,无需编译"
+          fi
+
+      - name: 触发编译
+        if: steps.merge.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "上游源码有改动,触发编译..."
+          gh api repos/nanxi9899/rr/dispatches \
+            -f event_type=upstream-changed \
+            -f 'client_payload={"source":"sync-upstream","branch":"main"}'
+          echo "已发送编译事件"
