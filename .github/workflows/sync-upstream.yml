@@ -61,6 +61,5 @@ jobs:
         run: |
           echo "上游源码有改动,触发编译..."
           gh api repos/nanxi9899/rr/dispatches \
-            -f event_type=upstream-changed \
-            -f 'client_payload={"source":"sync-upstream","branch":"main"}'
+            -f event_type=upstream-changed
           echo "已发送编译事件"
