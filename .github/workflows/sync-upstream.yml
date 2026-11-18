@@ -1,0 +1,41 @@
+name: Sync Fork from Upstream
+
+# 每天北京时间 03:00 (UTC 19:00) 自动同步上游,也可手动触发
+on:
+  schedule:
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/RROrg/rr.git
+          git fetch upstream --prune
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge & push
+        run: |
+          main="main"
+          git checkout "$main"
+          git reset --hard "origin/$main"
+          # 优先用同名分支 fast-forward,否则尝试上游默认分支
+          if git show-ref --verify --quiet "refs/remotes/upstream/$main"; then
+            git merge --ff-only "upstream/$main" || git merge --no-edit "upstream/$main"
+          else
+            UP_HEAD=$(git symbolic-ref --short refs/remotes/upstream/HEAD | sed 's#upstream/##')
+            git merge --no-edit "upstream/$UP_HEAD"
+          fi
+          git push origin "$main"
