@@ -1,0 +1,29 @@
+sudo: preserving the entire environment is not supported, '-E' is ignored
++ set -eu
++ VERSION=26.11.01
++ BASE_VERSION=26.9.0
++ VER_I915=1.6.18.56.261028.0
++ I915_TAG=I915_6.18.56_LTS_261028.0
++ I915_BASE=https://github.com/moetayuko/intel-gpu-i915-backports/releases/download/I915_6.18.56_LTS_261028.0
++ ASSET=rr26.11.01.img.zip
++ WORKDIR=/root/rrbuild
++ rm -rf /root/rrbuild
++ mkdir -p /root/rrbuild
++ cd /root/rrbuild
++ echo '===== [1/10] Download official base image ====='
+===== [1/10] Download official base image =====
++ curl -fL --retry 5 --retry-delay 3 -o rr-26.9.0.img.zip https://github.com/RROrg/rr/releases/download/26.9.0/rr-26.9.0.img.zip
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0  6  1.21G   6 83.24M   0      0 71.04M      0   00:17   00:01   00:16 83.24M 13  1.21G  13 170.0M   0      0 77.91M      0   00:15   00:02   00:13 84.61M 15  1.21G  15 195.7M   0      0 61.40M      0   00:20   00:03   00:17 64.93M 20  1.21G  20 254.3M   0      0 60.73M      0   00:20   00:04   00:16 63.35M 26  1.21G  26 327.8M   0      0 63.21M      0   00:19   00:05   00:14 65.40M 34  1.21G  34 429.3M   0      0 69.40M      0   00:17   00:06   00:11 69.01M 40  1.21G  40 510.0M   0      0 70.98M      0   00:17   00:07   00:10 67.97M 47  1.21G  47 593.3M   0      0 72.49M      0   00:17   00:08   00:09 79.56M 54  1.21G  54 676.3M   0      0 73.63M      0   00:16   00:09   00:07 84.44M 61  1.21G  61 767.9M   0      0 75.40M      0   00:16   00:10   00:06 88.03M 69  1.21G  69 860.0M   0      0 76.79M      0   00:16   00:11   00:05 85.91M 75  1.21G  75 944.9M   0      0 77.46M      0   00:16   00:12   00:04 86.76M 82  1.21G  82  0.99G   0      0 77.37M      0   00:16   00:13   00:03 85.35M 85  1.21G  85  1.03G   0      0 74.83M      0   00:16   00:14   00:02 77.04M 89  1.21G  89  1.08G   0      0 73.19M      0   00:16   00:15   00:01 68.73M 95  1.21G  95  1.15G   0      0 72.97M      0   00:17   00:16   00:01 64.43M100  1.21G 100  1.21G   0      0 74.11M      0   00:16   00:16         64.43M100  1.21G 100  1.21G   0      0 74.11M      0   00:16   00:16         64.43M100  1.21G 100  1.21G   0      0 74.11M      0   00:16   00:16         64.43M
++ unzip -q -o rr-26.9.0.img.zip
++ ls -lh rr.img
+-rw-r--r-- 1 root root 3.5G Sep  4 01:48 rr.img
++ echo '===== [2/10] Mount partitions by offset ====='
+===== [2/10] Mount partitions by offset =====
++ mkdir -p /mnt/rrp1 /mnt/rrp3
++ mount -o loop,offset=1048576 rr.img /mnt/rrp1
++ mount -o loop,offset=105906176 rr.img /mnt/rrp3
+mount: /mnt/rrp3: overlapping loop device exists for /root/rrbuild/rr.img.
+BUILD_RC=32
