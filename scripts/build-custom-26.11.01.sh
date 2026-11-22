@@ -113,5 +113,6 @@ sha256sum "${IMG_NAME}" "${ASSET}" > "sha256sum-${VERSION}.txt"
 cat "sha256sum-${VERSION}.txt"
 
 log "[10/10] Upload assets to release"
-gh release upload "${VERSION}" "${ASSET}" "sha256sum-${VERSION}.txt" --clobber
+cd "${GITHUB_WORKSPACE:-.}"
+gh release upload "${VERSION}" "${WORKDIR}/${ASSET}" "${WORKDIR}/sha256sum-${VERSION}.txt" --repo nanxi9899/rr --clobber
 echo "===== DONE ====="
