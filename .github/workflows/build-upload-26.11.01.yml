@@ -23,14 +23,14 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y zstd cpio zip unzip
+          sudo apt-get install -y zstd cpio zip unzip parted
 
       - name: Build and upload assets
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set +e
-          sudo -E bash -x scripts/build-custom-26.11.01.sh 2>&1 | tee build.log
+          sudo GH_TOKEN="$GH_TOKEN" bash -x scripts/build-custom-26.11.01.sh 2>&1 | tee build.log
           RC=${PIPESTATUS[0]}
           echo "BUILD_RC=$RC" | tee -a build.log
           exit $RC

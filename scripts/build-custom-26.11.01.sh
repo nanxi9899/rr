@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build RR custom bootloader 26.11.01 from official 26.9.0 base image.
-# Runs inside GitHub Actions ubuntu-latest as root. Produces and uploads the zip asset.
+# Runs inside GitHub Actions ubuntu-latest as root.
 set -eu
 
 VERSION="26.11.01"
@@ -21,10 +21,18 @@ curl -fL --retry 5 --retry-delay 3 -o "rr-${BASE_VERSION}.img.zip" \
 unzip -q -o "rr-${BASE_VERSION}.img.zip"
 ls -lh rr.img
 
-echo "===== [2/10] Mount partitions by offset ====="
+echo "===== [2/10] Attach loop with partscan and mount partitions ====="
+LOOP=$(losetup -fP --show rr.img)
+echo "loop device: ${LOOP}"
+partprobe "${LOOP}" 2>/dev/null || true
+for i in 1 2 3 4 5; do
+  [ -b "${LOOP}p3" ] && break
+  sleep 1
+done
+ls -l "${LOOP}"p* 2>/dev/null || true
 mkdir -p /mnt/rrp1 /mnt/rrp3
-mount -o loop,offset=$((2048*512)) rr.img /mnt/rrp1
-mount -o loop,offset=$((206848*512)) rr.img /mnt/rrp3
+mount "${LOOP}p1" /mnt/rrp1
+mount "${LOOP}p3" /mnt/rrp3
 df -h /mnt/rrp1 /mnt/rrp3
 
 echo "===== [3/10] Set version on p1 ====="
@@ -86,6 +94,7 @@ cp /tmp/hdddb-all.tgz /mnt/rrp3/addons/hdddb/all.tgz
 echo "===== [8/10] Unmount ====="
 sync
 umount /mnt/rrp1 /mnt/rrp3
+losetup -d "${LOOP}"
 
 echo "===== [9/10] Package image and checksums ====="
 mv rr.img "rr26.11.01.img"
