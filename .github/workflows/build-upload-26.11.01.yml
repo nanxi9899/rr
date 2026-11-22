@@ -29,13 +29,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -o pipefail
+          set +e
           sudo -E bash -x scripts/build-custom-26.11.01.sh 2>&1 | tee build.log
+          RC=${PIPESTATUS[0]}
+          echo "BUILD_RC=$RC" | tee -a build.log
+          exit $RC
 
-      - name: Upload build log
+      - name: Publish build log to repo
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log
-          retention-days: 3
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f build.log ]; then
+            B64=$(base64 -w0 build.log)
+            gh api --method PUT repos/nanxi9899/rr/contents/build-diag.log \
+              -f message="ci: publish build diagnostic log" \
+              -f content="$B64" -f branch="main" || true
+          fi

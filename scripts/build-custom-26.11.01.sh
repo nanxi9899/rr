@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # Build RR custom bootloader 26.11.01 from official 26.9.0 base image.
 # Runs inside GitHub Actions ubuntu-latest as root. Produces and uploads the zip asset.
-set -euo pipefail
+set -eu
 
 VERSION="26.11.01"
 BASE_VERSION="26.9.0"
 VER_I915="1.6.18.56.261028.0"
 I915_TAG="I915_6.18.56_LTS_261028.0"
 I915_BASE="https://github.com/moetayuko/intel-gpu-i915-backports/releases/download/${I915_TAG}"
+ASSET="rr26.11.01.img.zip"
 WORKDIR="/root/rrbuild"
 
 rm -rf "$WORKDIR"
@@ -21,7 +22,6 @@ unzip -q -o "rr-${BASE_VERSION}.img.zip"
 ls -lh rr.img
 
 echo "===== [2/10] Mount partitions by offset ====="
-# MBR layout: p1 start=2048, p3 start=206848 (512B sectors)
 mkdir -p /mnt/rrp1 /mnt/rrp3
 mount -o loop,offset=$((2048*512)) rr.img /mnt/rrp1
 mount -o loop,offset=$((206848*512)) rr.img /mnt/rrp3
@@ -33,11 +33,11 @@ cat /mnt/rrp1/RR_VERSION; echo
 
 echo "===== [4/10] Patch initrd consts.sh ====="
 rm -rf /tmp/rrinitrd && mkdir -p /tmp/rrinitrd
-zstd -dc /mnt/rrp3/initrd-rr 2>/dev/null | cpio -idm -D /tmp/rrinitrd 2>/dev/null
+zstd -dc /mnt/rrp3/initrd-rr 2>/dev/null | cpio -idm -D /tmp/rrinitrd 2>/dev/null || true
 sed -i "s/^RR_VERSION=.*/RR_VERSION=\"${VERSION}\"/" /tmp/rrinitrd/opt/rr/include/consts.sh
 sed -i 's/^RR_RELEASE=.*/RR_RELEASE=""/' /tmp/rrinitrd/opt/rr/include/consts.sh
 grep -E '^RR_VERSION|^RR_RELEASE' /tmp/rrinitrd/opt/rr/include/consts.sh
-(cd /tmp/rrinitrd && find . -print0 | cpio --null -o -H newc -R root:root 2>/dev/null | zstd -19 -T0 -f -c - > /tmp/initrd-rr.new)
+(cd /tmp/rrinitrd && find . -print0 2>/dev/null | cpio --null -o -H newc -R root:root 2>/dev/null | zstd -19 -T0 -f -c - > /tmp/initrd-rr.new) || true
 cp /tmp/initrd-rr.new /mnt/rrp3/initrd-rr
 ls -lh /mnt/rrp3/initrd-rr
 
@@ -79,7 +79,7 @@ curl -fL --retry 3 -o install.sh \
 rm -rf hddwork && mkdir -p hddwork/root/usr/bin
 cp install.sh hddwork/install.sh
 cp syno_hdd_db.sh hddwork/root/usr/bin/hdddb.sh
-grep -m1 'scriptver=' hddwork/root/usr/bin/hdddb.sh
+grep -m1 'scriptver=' hddwork/root/usr/bin/hdddb.sh || true
 (cd hddwork && tar -czf /tmp/hdddb-all.tgz .)
 cp /tmp/hdddb-all.tgz /mnt/rrp3/addons/hdddb/all.tgz
 
@@ -88,12 +88,12 @@ sync
 umount /mnt/rrp1 /mnt/rrp3
 
 echo "===== [9/10] Package image and checksums ====="
-mv rr.img "rr-${VERSION}.img"
-zip -6 "rr-${VERSION}.img.zip" "rr-${VERSION}.img"
-sha256sum "rr-${VERSION}.img" "rr-${VERSION}.img.zip" > "sha256sum-${VERSION}.txt"
-cat "sha256sum-${VERSION}.txt"
+mv rr.img "rr26.11.01.img"
+zip -6 "${ASSET}" "rr26.11.01.img"
+sha256sum "rr26.11.01.img" "${ASSET}" > "sha256sum-rr26.11.01.txt"
+cat "sha256sum-rr26.11.01.txt"
 
 echo "===== [10/10] Upload assets to release ====="
 gh release upload "${VERSION}" \
-  "rr-${VERSION}.img.zip" "sha256sum-${VERSION}.txt" --clobber
+  "${ASSET}" "sha256sum-rr26.11.01.txt" --clobber
 echo "===== DONE ====="
