@@ -18,7 +18,7 @@ sudo: preserving the entire environment is not supported, '-E' is ignored
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0  4  1.21G   4 60.00M   0      0 50.33M      0   00:24   00:01   00:23 59.87M 12  1.21G  12 149.9M   0      0 68.40M      0   00:18   00:02   00:16 74.88M 18  1.21G  18 230.0M   0      0 71.10M      0   00:17   00:03   00:14 75.53M 24  1.21G  24 310.4M   0      0 73.31M      0   00:16   00:04   00:12 76.75M 31  1.21G  31 390.3M   0      0 74.59M      0   00:16   00:05   00:11 77.40M 38  1.21G  38 480.0M   0      0 76.83M      0   00:16   00:06   00:10 83.08M 45  1.21G  45 562.1M   0      0 77.57M      0   00:16   00:07   00:09 81.56M 48  1.21G  48 604.9M   0      0 73.36M      0   00:16   00:08   00:08 74.83M 53  1.21G  53 670.0M   0      0 72.29M      0   00:17   00:09   00:08 71.43M 60  1.21G  60 753.5M   0      0 73.39M      0   00:16   00:10   00:06 72.14M 67  1.21G  67 840.0M   0      0 74.49M      0   00:16   00:11   00:05 71.59M 74  1.21G  74 928.9M   0      0 75.67M      0   00:16   00:12   00:04 72.94M 79  1.21G  79 990.0M   0      0 74.56M      0   00:16   00:13   00:03 76.54M 86  1.21G  86  1.04G   0      0 75.08M      0   00:16   00:14   00:02 80.26M 92  1.21G  92  1.11G   0      0 75.03M      0   00:16   00:15   00:01 78.41M 99  1.21G  99  1.21G   0      0 76.08M      0   00:16   00:16         79.65M100  1.21G 100  1.21G   0      0 76.27M      0   00:16   00:16         79.65M100  1.21G 100  1.21G   0      0 76.27M      0   00:16   00:16         79.65M100  1.21G 100  1.21G   0      0 76.27M      0   00:16   00:16         79.65M
+  0      0   0      0   0      0      0      0                              0  7  1.21G   7 89.70M   0      0 77.96M      0   00:15   00:01   00:14 89.70M 15  1.21G  15 188.6M   0      0 87.74M      0   00:14   00:02   00:12 94.34M 22  1.21G  22 283.9M   0      0 90.17M      0   00:13   00:03   00:10 94.69M 27  1.21G  27 346.0M   0      0 83.39M      0   00:14   00:04   00:10 86.53M 32  1.21G  32 401.9M   0      0 77.92M      0   00:15   00:05   00:10 80.28M 32  1.21G  32 409.7M   0      0 66.54M      0   00:18   00:06   00:12 63.92M 37  1.21G  37 470.6M   0      0 65.61M      0   00:18   00:07   00:11 56.15M 38  1.21G  38 476.3M   0      0 58.24M      0   00:21   00:08   00:13 38.25M 41  1.21G  41 515.5M   0      0 56.17M      0   00:22   00:09   00:13 33.71M 47  1.21G  47 594.7M   0      0 58.44M      0   00:21   00:10   00:11 38.41M 53  1.21G  53 663.9M   0      0 59.40M      0   00:20   00:11   00:09 50.65M 55  1.21G  55 689.2M   0      0 56.60M      0   00:21   00:12   00:09 43.69M 64  1.21G  64 796.8M   0      0 60.48M      0   00:20   00:13   00:07 64.14M 72  1.21G  72 902.9M   0      0 63.70M      0   00:19   00:14   00:05 77.52M 82  1.21G  82  1.00G   0      0 67.94M      0   00:18   00:15   00:03 87.28M 86  1.21G  86  1.04G   0      0 66.33M      0   00:18   00:16   00:02 81.79M 86  1.21G  86  1.05G   0      0 62.75M      0   00:19   00:17   00:02 77.70M 94  1.21G  94  1.15G   0      0 64.97M      0   00:19   00:18   00:01 76.77M100  1.21G 100  1.21G   0      0 66.02M      0   00:18   00:18         76.77M100  1.21G 100  1.21G   0      0 66.02M      0   00:18   00:18         76.77M100  1.21G 100  1.21G   0      0 66.02M      0   00:18   00:18         76.77M
 + unzip -q -o rr-26.9.0.img.zip
 + ls -lh rr.img
 -rw-r--r-- 1 root root 3.5G Sep  4 01:48 rr.img
@@ -33,11 +33,14 @@ loop device: /dev/loop0
 ++ seq 1 10
 + for i in $(seq 1 10)
 + '[' -b /dev/loop0p3 ']'
++ sleep 1
++ for i in $(seq 1 10)
++ '[' -b /dev/loop0p3 ']'
 + break
 + ls -l /dev/loop0p1 /dev/loop0p2 /dev/loop0p3
-brw------- 1 root root 259, 0 Nov 22 23:41 /dev/loop0p1
-brw------- 1 root root 259, 1 Nov 22 23:41 /dev/loop0p2
-brw------- 1 root root 259, 2 Nov 22 23:41 /dev/loop0p3
+brw-rw---- 1 root disk 259, 5 Nov 22 23:48 /dev/loop0p1
+brw-rw---- 1 root disk 259, 6 Nov 22 23:48 /dev/loop0p2
+brw-rw---- 1 root disk 259, 7 Nov 22 23:48 /dev/loop0p3
 + '[' -b /dev/loop0p1 ']'
 + '[' -b /dev/loop0p3 ']'
 + mkdir -p /mnt/rrp1 /mnt/rrp3
@@ -70,13 +73,13 @@ RR_RELEASE=""
 + cp /mnt/rrp3/initrd-rr /tmp/initrd-rr.orig
 + cd /tmp/rrinitrd
 + find . -print0
-+ zstd -19 -T0 -f -c -
 + cpio --null -o -H newc -R root:root
++ zstd -19 -T0 -f -c -
 + '[' -s /tmp/initrd-rr.new ']'
 + cp /tmp/initrd-rr.new /mnt/rrp3/initrd-rr
 + ls -lh /tmp/initrd-rr.orig /mnt/rrp3/initrd-rr
--rw-r--r-- 1 root root 246M Nov 22 23:44 /mnt/rrp3/initrd-rr
--rw-r--r-- 1 root root 248M Nov 22 23:41 /tmp/initrd-rr.orig
+-rw-r--r-- 1 root root 246M Nov 22 23:50 /mnt/rrp3/initrd-rr
+-rw-r--r-- 1 root root 248M Nov 22 23:48 /tmp/initrd-rr.orig
 + log '[5/10] Merge i915 modules into 16 platform packages'
 + echo '===== [5/10] Merge i915 modules into 16 platform packages ====='
 ===== [5/10] Merge i915 modules into 16 platform packages =====
@@ -89,17 +92,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.64M 100  6.64M   0      0 12.98M      0                              0100  6.64M 100  6.64M   0      0 12.98M      0                              0100  6.64M 100  6.64M   0      0 12.98M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.64M 100  6.64M   0      0 17.12M      0                              0100  6.64M 100  6.64M   0      0 17.12M      0                              0100  6.64M 100  6.64M   0      0 17.12M      0                              0
 + w=modwork/epyc7002-7.1
 + rm -rf modwork/epyc7002-7.1
 + mkdir -p modwork/epyc7002-7.1
 + tar -xzf /mnt/rrp3/modules/epyc7002-7.1-5.10.55.tgz -C modwork/epyc7002-7.1
 ++ mktemp -d
-+ t=/tmp/tmp.0b1FGTkU7c
-+ tar -xzf i915-dsm-epyc7002-7.1-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.0b1FGTkU7c
-+ '[' -d /tmp/tmp.0b1FGTkU7c/modules ']'
-+ cp -f /tmp/tmp.0b1FGTkU7c/modules/auxiliary.ko /tmp/tmp.0b1FGTkU7c/modules/dmabuf.ko /tmp/tmp.0b1FGTkU7c/modules/drm.ko /tmp/tmp.0b1FGTkU7c/modules/drm_buddy.ko /tmp/tmp.0b1FGTkU7c/modules/drm_display_helper.ko /tmp/tmp.0b1FGTkU7c/modules/drm_kms_helper.ko /tmp/tmp.0b1FGTkU7c/modules/drm_mipi_dsi.ko /tmp/tmp.0b1FGTkU7c/modules/drm_panel_orientation_quirks.ko /tmp/tmp.0b1FGTkU7c/modules/gpu_buddy.ko /tmp/tmp.0b1FGTkU7c/modules/hdmi.ko /tmp/tmp.0b1FGTkU7c/modules/i915-compat.ko /tmp/tmp.0b1FGTkU7c/modules/i915.ko /tmp/tmp.0b1FGTkU7c/modules/intel-gtt.ko /tmp/tmp.0b1FGTkU7c/modules/ttm.ko modwork/epyc7002-7.1/
-+ rm -rf /tmp/tmp.0b1FGTkU7c
++ t=/tmp/tmp.DlnCuuUJ4o
++ tar -xzf i915-dsm-epyc7002-7.1-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.DlnCuuUJ4o
++ '[' -d /tmp/tmp.DlnCuuUJ4o/modules ']'
++ cp -f /tmp/tmp.DlnCuuUJ4o/modules/auxiliary.ko /tmp/tmp.DlnCuuUJ4o/modules/dmabuf.ko /tmp/tmp.DlnCuuUJ4o/modules/drm.ko /tmp/tmp.DlnCuuUJ4o/modules/drm_buddy.ko /tmp/tmp.DlnCuuUJ4o/modules/drm_display_helper.ko /tmp/tmp.DlnCuuUJ4o/modules/drm_kms_helper.ko /tmp/tmp.DlnCuuUJ4o/modules/drm_mipi_dsi.ko /tmp/tmp.DlnCuuUJ4o/modules/drm_panel_orientation_quirks.ko /tmp/tmp.DlnCuuUJ4o/modules/gpu_buddy.ko /tmp/tmp.DlnCuuUJ4o/modules/hdmi.ko /tmp/tmp.DlnCuuUJ4o/modules/i915-compat.ko /tmp/tmp.DlnCuuUJ4o/modules/i915.ko /tmp/tmp.DlnCuuUJ4o/modules/intel-gtt.ko /tmp/tmp.DlnCuuUJ4o/modules/ttm.ko modwork/epyc7002-7.1/
++ rm -rf /tmp/tmp.DlnCuuUJ4o
 + cd modwork/epyc7002-7.1
 + tar -czf /tmp/epyc7002-7.1-5.10.55.tgz.new .
 + cp /tmp/epyc7002-7.1-5.10.55.tgz.new /mnt/rrp3/modules/epyc7002-7.1-5.10.55.tgz
@@ -113,17 +116,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 19.86M      0                              0100  6.67M 100  6.67M   0      0 19.85M      0                              0100  6.67M 100  6.67M   0      0 19.85M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 17.83M      0                              0100  6.67M 100  6.67M   0      0 17.82M      0                              0100  6.67M 100  6.67M   0      0 17.82M      0                              0
 + w=modwork/epyc7002-7.2
 + rm -rf modwork/epyc7002-7.2
 + mkdir -p modwork/epyc7002-7.2
 + tar -xzf /mnt/rrp3/modules/epyc7002-7.2-5.10.55.tgz -C modwork/epyc7002-7.2
 ++ mktemp -d
-+ t=/tmp/tmp.YJ5BFt4nYJ
-+ tar -xzf i915-dsm-epyc7002-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.YJ5BFt4nYJ
-+ '[' -d /tmp/tmp.YJ5BFt4nYJ/modules ']'
-+ cp -f /tmp/tmp.YJ5BFt4nYJ/modules/auxiliary.ko /tmp/tmp.YJ5BFt4nYJ/modules/dmabuf.ko /tmp/tmp.YJ5BFt4nYJ/modules/drm.ko /tmp/tmp.YJ5BFt4nYJ/modules/drm_buddy.ko /tmp/tmp.YJ5BFt4nYJ/modules/drm_display_helper.ko /tmp/tmp.YJ5BFt4nYJ/modules/drm_kms_helper.ko /tmp/tmp.YJ5BFt4nYJ/modules/drm_mipi_dsi.ko /tmp/tmp.YJ5BFt4nYJ/modules/drm_panel_orientation_quirks.ko /tmp/tmp.YJ5BFt4nYJ/modules/gpu_buddy.ko /tmp/tmp.YJ5BFt4nYJ/modules/hdmi.ko /tmp/tmp.YJ5BFt4nYJ/modules/i915-compat.ko /tmp/tmp.YJ5BFt4nYJ/modules/i915.ko /tmp/tmp.YJ5BFt4nYJ/modules/intel-gtt.ko /tmp/tmp.YJ5BFt4nYJ/modules/ttm.ko modwork/epyc7002-7.2/
-+ rm -rf /tmp/tmp.YJ5BFt4nYJ
++ t=/tmp/tmp.T7mLus2QZ1
++ tar -xzf i915-dsm-epyc7002-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.T7mLus2QZ1
++ '[' -d /tmp/tmp.T7mLus2QZ1/modules ']'
++ cp -f /tmp/tmp.T7mLus2QZ1/modules/auxiliary.ko /tmp/tmp.T7mLus2QZ1/modules/dmabuf.ko /tmp/tmp.T7mLus2QZ1/modules/drm.ko /tmp/tmp.T7mLus2QZ1/modules/drm_buddy.ko /tmp/tmp.T7mLus2QZ1/modules/drm_display_helper.ko /tmp/tmp.T7mLus2QZ1/modules/drm_kms_helper.ko /tmp/tmp.T7mLus2QZ1/modules/drm_mipi_dsi.ko /tmp/tmp.T7mLus2QZ1/modules/drm_panel_orientation_quirks.ko /tmp/tmp.T7mLus2QZ1/modules/gpu_buddy.ko /tmp/tmp.T7mLus2QZ1/modules/hdmi.ko /tmp/tmp.T7mLus2QZ1/modules/i915-compat.ko /tmp/tmp.T7mLus2QZ1/modules/i915.ko /tmp/tmp.T7mLus2QZ1/modules/intel-gtt.ko /tmp/tmp.T7mLus2QZ1/modules/ttm.ko modwork/epyc7002-7.2/
++ rm -rf /tmp/tmp.T7mLus2QZ1
 + cd modwork/epyc7002-7.2
 + tar -czf /tmp/epyc7002-7.2-5.10.55.tgz.new .
 + cp /tmp/epyc7002-7.2-5.10.55.tgz.new /mnt/rrp3/modules/epyc7002-7.2-5.10.55.tgz
@@ -137,17 +140,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 15.80M      0                              0100  6.67M 100  6.67M   0      0 15.80M      0                              0100  6.67M 100  6.67M   0      0 15.80M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 16.01M      0                              0100  6.67M 100  6.67M   0      0 16.00M      0                              0100  6.67M 100  6.67M   0      0 16.00M      0                              0
 + w=modwork/epyc7002-7.3
 + rm -rf modwork/epyc7002-7.3
 + mkdir -p modwork/epyc7002-7.3
 + tar -xzf /mnt/rrp3/modules/epyc7002-7.3-5.10.55.tgz -C modwork/epyc7002-7.3
 ++ mktemp -d
-+ t=/tmp/tmp.ZJ8boQUCHC
-+ tar -xzf i915-dsm-epyc7002-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.ZJ8boQUCHC
-+ '[' -d /tmp/tmp.ZJ8boQUCHC/modules ']'
-+ cp -f /tmp/tmp.ZJ8boQUCHC/modules/auxiliary.ko /tmp/tmp.ZJ8boQUCHC/modules/dmabuf.ko /tmp/tmp.ZJ8boQUCHC/modules/drm.ko /tmp/tmp.ZJ8boQUCHC/modules/drm_buddy.ko /tmp/tmp.ZJ8boQUCHC/modules/drm_display_helper.ko /tmp/tmp.ZJ8boQUCHC/modules/drm_kms_helper.ko /tmp/tmp.ZJ8boQUCHC/modules/drm_mipi_dsi.ko /tmp/tmp.ZJ8boQUCHC/modules/drm_panel_orientation_quirks.ko /tmp/tmp.ZJ8boQUCHC/modules/gpu_buddy.ko /tmp/tmp.ZJ8boQUCHC/modules/hdmi.ko /tmp/tmp.ZJ8boQUCHC/modules/i915-compat.ko /tmp/tmp.ZJ8boQUCHC/modules/i915.ko /tmp/tmp.ZJ8boQUCHC/modules/intel-gtt.ko /tmp/tmp.ZJ8boQUCHC/modules/ttm.ko modwork/epyc7002-7.3/
-+ rm -rf /tmp/tmp.ZJ8boQUCHC
++ t=/tmp/tmp.36r9bq7eam
++ tar -xzf i915-dsm-epyc7002-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.36r9bq7eam
++ '[' -d /tmp/tmp.36r9bq7eam/modules ']'
++ cp -f /tmp/tmp.36r9bq7eam/modules/auxiliary.ko /tmp/tmp.36r9bq7eam/modules/dmabuf.ko /tmp/tmp.36r9bq7eam/modules/drm.ko /tmp/tmp.36r9bq7eam/modules/drm_buddy.ko /tmp/tmp.36r9bq7eam/modules/drm_display_helper.ko /tmp/tmp.36r9bq7eam/modules/drm_kms_helper.ko /tmp/tmp.36r9bq7eam/modules/drm_mipi_dsi.ko /tmp/tmp.36r9bq7eam/modules/drm_panel_orientation_quirks.ko /tmp/tmp.36r9bq7eam/modules/gpu_buddy.ko /tmp/tmp.36r9bq7eam/modules/hdmi.ko /tmp/tmp.36r9bq7eam/modules/i915-compat.ko /tmp/tmp.36r9bq7eam/modules/i915.ko /tmp/tmp.36r9bq7eam/modules/intel-gtt.ko /tmp/tmp.36r9bq7eam/modules/ttm.ko modwork/epyc7002-7.3/
++ rm -rf /tmp/tmp.36r9bq7eam
 + cd modwork/epyc7002-7.3
 + tar -czf /tmp/epyc7002-7.3-5.10.55.tgz.new .
 + cp /tmp/epyc7002-7.3-5.10.55.tgz.new /mnt/rrp3/modules/epyc7002-7.3-5.10.55.tgz
@@ -161,17 +164,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 18.53M      0                              0100  6.67M 100  6.67M   0      0 18.53M      0                              0100  6.67M 100  6.67M   0      0 18.53M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 17.04M      0                              0100  6.67M 100  6.67M   0      0 17.04M      0                              0100  6.67M 100  6.67M   0      0 17.04M      0                              0
 + w=modwork/epyc7002-7.4
 + rm -rf modwork/epyc7002-7.4
 + mkdir -p modwork/epyc7002-7.4
 + tar -xzf /mnt/rrp3/modules/epyc7002-7.4-5.10.55.tgz -C modwork/epyc7002-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.7B6GHJQajy
-+ tar -xzf i915-dsm-epyc7002-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.7B6GHJQajy
-+ '[' -d /tmp/tmp.7B6GHJQajy/modules ']'
-+ cp -f /tmp/tmp.7B6GHJQajy/modules/auxiliary.ko /tmp/tmp.7B6GHJQajy/modules/dmabuf.ko /tmp/tmp.7B6GHJQajy/modules/drm.ko /tmp/tmp.7B6GHJQajy/modules/drm_buddy.ko /tmp/tmp.7B6GHJQajy/modules/drm_display_helper.ko /tmp/tmp.7B6GHJQajy/modules/drm_kms_helper.ko /tmp/tmp.7B6GHJQajy/modules/drm_mipi_dsi.ko /tmp/tmp.7B6GHJQajy/modules/drm_panel_orientation_quirks.ko /tmp/tmp.7B6GHJQajy/modules/gpu_buddy.ko /tmp/tmp.7B6GHJQajy/modules/hdmi.ko /tmp/tmp.7B6GHJQajy/modules/i915-compat.ko /tmp/tmp.7B6GHJQajy/modules/i915.ko /tmp/tmp.7B6GHJQajy/modules/intel-gtt.ko /tmp/tmp.7B6GHJQajy/modules/ttm.ko modwork/epyc7002-7.4/
-+ rm -rf /tmp/tmp.7B6GHJQajy
++ t=/tmp/tmp.dv12ps3dib
++ tar -xzf i915-dsm-epyc7002-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.dv12ps3dib
++ '[' -d /tmp/tmp.dv12ps3dib/modules ']'
++ cp -f /tmp/tmp.dv12ps3dib/modules/auxiliary.ko /tmp/tmp.dv12ps3dib/modules/dmabuf.ko /tmp/tmp.dv12ps3dib/modules/drm.ko /tmp/tmp.dv12ps3dib/modules/drm_buddy.ko /tmp/tmp.dv12ps3dib/modules/drm_display_helper.ko /tmp/tmp.dv12ps3dib/modules/drm_kms_helper.ko /tmp/tmp.dv12ps3dib/modules/drm_mipi_dsi.ko /tmp/tmp.dv12ps3dib/modules/drm_panel_orientation_quirks.ko /tmp/tmp.dv12ps3dib/modules/gpu_buddy.ko /tmp/tmp.dv12ps3dib/modules/hdmi.ko /tmp/tmp.dv12ps3dib/modules/i915-compat.ko /tmp/tmp.dv12ps3dib/modules/i915.ko /tmp/tmp.dv12ps3dib/modules/intel-gtt.ko /tmp/tmp.dv12ps3dib/modules/ttm.ko modwork/epyc7002-7.4/
++ rm -rf /tmp/tmp.dv12ps3dib
 + cd modwork/epyc7002-7.4
 + tar -czf /tmp/epyc7002-7.4-5.10.55.tgz.new .
 + cp /tmp/epyc7002-7.4-5.10.55.tgz.new /mnt/rrp3/modules/epyc7002-7.4-5.10.55.tgz
@@ -185,17 +188,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 16.33M      0                              0100  6.67M 100  6.67M   0      0 16.33M      0                              0100  6.67M 100  6.67M   0      0 16.33M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 12.26M      0                              0100  6.67M 100  6.67M   0      0 12.26M      0                              0100  6.67M 100  6.67M   0      0 12.26M      0                              0
 + w=modwork/epyc7003-7.4
 + rm -rf modwork/epyc7003-7.4
 + mkdir -p modwork/epyc7003-7.4
 + tar -xzf /mnt/rrp3/modules/epyc7003-7.4-5.10.55.tgz -C modwork/epyc7003-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.BGsywTK9UN
-+ tar -xzf i915-dsm-epyc7003-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.BGsywTK9UN
-+ '[' -d /tmp/tmp.BGsywTK9UN/modules ']'
-+ cp -f /tmp/tmp.BGsywTK9UN/modules/auxiliary.ko /tmp/tmp.BGsywTK9UN/modules/dmabuf.ko /tmp/tmp.BGsywTK9UN/modules/drm.ko /tmp/tmp.BGsywTK9UN/modules/drm_buddy.ko /tmp/tmp.BGsywTK9UN/modules/drm_display_helper.ko /tmp/tmp.BGsywTK9UN/modules/drm_kms_helper.ko /tmp/tmp.BGsywTK9UN/modules/drm_mipi_dsi.ko /tmp/tmp.BGsywTK9UN/modules/drm_panel_orientation_quirks.ko /tmp/tmp.BGsywTK9UN/modules/gpu_buddy.ko /tmp/tmp.BGsywTK9UN/modules/hdmi.ko /tmp/tmp.BGsywTK9UN/modules/i915-compat.ko /tmp/tmp.BGsywTK9UN/modules/i915.ko /tmp/tmp.BGsywTK9UN/modules/intel-gtt.ko /tmp/tmp.BGsywTK9UN/modules/ttm.ko modwork/epyc7003-7.4/
-+ rm -rf /tmp/tmp.BGsywTK9UN
++ t=/tmp/tmp.tvYpkp480P
++ tar -xzf i915-dsm-epyc7003-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.tvYpkp480P
++ '[' -d /tmp/tmp.tvYpkp480P/modules ']'
++ cp -f /tmp/tmp.tvYpkp480P/modules/auxiliary.ko /tmp/tmp.tvYpkp480P/modules/dmabuf.ko /tmp/tmp.tvYpkp480P/modules/drm.ko /tmp/tmp.tvYpkp480P/modules/drm_buddy.ko /tmp/tmp.tvYpkp480P/modules/drm_display_helper.ko /tmp/tmp.tvYpkp480P/modules/drm_kms_helper.ko /tmp/tmp.tvYpkp480P/modules/drm_mipi_dsi.ko /tmp/tmp.tvYpkp480P/modules/drm_panel_orientation_quirks.ko /tmp/tmp.tvYpkp480P/modules/gpu_buddy.ko /tmp/tmp.tvYpkp480P/modules/hdmi.ko /tmp/tmp.tvYpkp480P/modules/i915-compat.ko /tmp/tmp.tvYpkp480P/modules/i915.ko /tmp/tmp.tvYpkp480P/modules/intel-gtt.ko /tmp/tmp.tvYpkp480P/modules/ttm.ko modwork/epyc7003-7.4/
++ rm -rf /tmp/tmp.tvYpkp480P
 + cd modwork/epyc7003-7.4
 + tar -czf /tmp/epyc7003-7.4-5.10.55.tgz.new .
 + cp /tmp/epyc7003-7.4-5.10.55.tgz.new /mnt/rrp3/modules/epyc7003-7.4-5.10.55.tgz
@@ -209,17 +212,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 16.63M      0                              0100  6.67M 100  6.67M   0      0 16.63M      0                              0100  6.67M 100  6.67M   0      0 16.62M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 17.85M      0                              0100  6.67M 100  6.67M   0      0 17.85M      0                              0100  6.67M 100  6.67M   0      0 17.85M      0                              0
 + w=modwork/epyc7003ntb-7.4
 + rm -rf modwork/epyc7003ntb-7.4
 + mkdir -p modwork/epyc7003ntb-7.4
 + tar -xzf /mnt/rrp3/modules/epyc7003ntb-7.4-5.10.55.tgz -C modwork/epyc7003ntb-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.dwG8w78Hdm
-+ tar -xzf i915-dsm-epyc7003ntb-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.dwG8w78Hdm
-+ '[' -d /tmp/tmp.dwG8w78Hdm/modules ']'
-+ cp -f /tmp/tmp.dwG8w78Hdm/modules/dmabuf.ko /tmp/tmp.dwG8w78Hdm/modules/drm.ko /tmp/tmp.dwG8w78Hdm/modules/drm_buddy.ko /tmp/tmp.dwG8w78Hdm/modules/drm_display_helper.ko /tmp/tmp.dwG8w78Hdm/modules/drm_kms_helper.ko /tmp/tmp.dwG8w78Hdm/modules/drm_mipi_dsi.ko /tmp/tmp.dwG8w78Hdm/modules/drm_panel_orientation_quirks.ko /tmp/tmp.dwG8w78Hdm/modules/gpu_buddy.ko /tmp/tmp.dwG8w78Hdm/modules/hdmi.ko /tmp/tmp.dwG8w78Hdm/modules/i915-compat.ko /tmp/tmp.dwG8w78Hdm/modules/i915.ko /tmp/tmp.dwG8w78Hdm/modules/intel-gtt.ko /tmp/tmp.dwG8w78Hdm/modules/ttm.ko modwork/epyc7003ntb-7.4/
-+ rm -rf /tmp/tmp.dwG8w78Hdm
++ t=/tmp/tmp.hvm0D3CBHs
++ tar -xzf i915-dsm-epyc7003ntb-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.hvm0D3CBHs
++ '[' -d /tmp/tmp.hvm0D3CBHs/modules ']'
++ cp -f /tmp/tmp.hvm0D3CBHs/modules/dmabuf.ko /tmp/tmp.hvm0D3CBHs/modules/drm.ko /tmp/tmp.hvm0D3CBHs/modules/drm_buddy.ko /tmp/tmp.hvm0D3CBHs/modules/drm_display_helper.ko /tmp/tmp.hvm0D3CBHs/modules/drm_kms_helper.ko /tmp/tmp.hvm0D3CBHs/modules/drm_mipi_dsi.ko /tmp/tmp.hvm0D3CBHs/modules/drm_panel_orientation_quirks.ko /tmp/tmp.hvm0D3CBHs/modules/gpu_buddy.ko /tmp/tmp.hvm0D3CBHs/modules/hdmi.ko /tmp/tmp.hvm0D3CBHs/modules/i915-compat.ko /tmp/tmp.hvm0D3CBHs/modules/i915.ko /tmp/tmp.hvm0D3CBHs/modules/intel-gtt.ko /tmp/tmp.hvm0D3CBHs/modules/ttm.ko modwork/epyc7003ntb-7.4/
++ rm -rf /tmp/tmp.hvm0D3CBHs
 + cd modwork/epyc7003ntb-7.4
 + tar -czf /tmp/epyc7003ntb-7.4-5.10.55.tgz.new .
 + cp /tmp/epyc7003ntb-7.4-5.10.55.tgz.new /mnt/rrp3/modules/epyc7003ntb-7.4-5.10.55.tgz
@@ -233,17 +236,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.66M 100  6.66M   0      0 15.99M      0                              0100  6.66M 100  6.66M   0      0 15.98M      0                              0100  6.66M 100  6.66M   0      0 15.98M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.66M 100  6.66M   0      0 17.52M      0                              0100  6.66M 100  6.66M   0      0 17.52M      0                              0100  6.66M 100  6.66M   0      0 17.52M      0                              0
 + w=modwork/geminilakenk-7.2
 + rm -rf modwork/geminilakenk-7.2
 + mkdir -p modwork/geminilakenk-7.2
 + tar -xzf /mnt/rrp3/modules/geminilakenk-7.2-5.10.55.tgz -C modwork/geminilakenk-7.2
 ++ mktemp -d
-+ t=/tmp/tmp.ASLqE7bXe4
-+ tar -xzf i915-dsm-geminilakenk-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.ASLqE7bXe4
-+ '[' -d /tmp/tmp.ASLqE7bXe4/modules ']'
-+ cp -f /tmp/tmp.ASLqE7bXe4/modules/auxiliary.ko /tmp/tmp.ASLqE7bXe4/modules/dmabuf.ko /tmp/tmp.ASLqE7bXe4/modules/drm.ko /tmp/tmp.ASLqE7bXe4/modules/drm_buddy.ko /tmp/tmp.ASLqE7bXe4/modules/drm_client_lib.ko /tmp/tmp.ASLqE7bXe4/modules/drm_display_helper.ko /tmp/tmp.ASLqE7bXe4/modules/drm_kms_helper.ko /tmp/tmp.ASLqE7bXe4/modules/drm_panel_orientation_quirks.ko /tmp/tmp.ASLqE7bXe4/modules/gpu_buddy.ko /tmp/tmp.ASLqE7bXe4/modules/i915-compat.ko /tmp/tmp.ASLqE7bXe4/modules/i915.ko /tmp/tmp.ASLqE7bXe4/modules/ttm.ko modwork/geminilakenk-7.2/
-+ rm -rf /tmp/tmp.ASLqE7bXe4
++ t=/tmp/tmp.65YBND5A5n
++ tar -xzf i915-dsm-geminilakenk-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.65YBND5A5n
++ '[' -d /tmp/tmp.65YBND5A5n/modules ']'
++ cp -f /tmp/tmp.65YBND5A5n/modules/auxiliary.ko /tmp/tmp.65YBND5A5n/modules/dmabuf.ko /tmp/tmp.65YBND5A5n/modules/drm.ko /tmp/tmp.65YBND5A5n/modules/drm_buddy.ko /tmp/tmp.65YBND5A5n/modules/drm_client_lib.ko /tmp/tmp.65YBND5A5n/modules/drm_display_helper.ko /tmp/tmp.65YBND5A5n/modules/drm_kms_helper.ko /tmp/tmp.65YBND5A5n/modules/drm_panel_orientation_quirks.ko /tmp/tmp.65YBND5A5n/modules/gpu_buddy.ko /tmp/tmp.65YBND5A5n/modules/i915-compat.ko /tmp/tmp.65YBND5A5n/modules/i915.ko /tmp/tmp.65YBND5A5n/modules/ttm.ko modwork/geminilakenk-7.2/
++ rm -rf /tmp/tmp.65YBND5A5n
 + cd modwork/geminilakenk-7.2
 + tar -czf /tmp/geminilakenk-7.2-5.10.55.tgz.new .
 + cp /tmp/geminilakenk-7.2-5.10.55.tgz.new /mnt/rrp3/modules/geminilakenk-7.2-5.10.55.tgz
@@ -257,17 +260,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.66M 100  6.66M   0      0 19.47M      0                              0100  6.66M 100  6.66M   0      0 19.46M      0                              0100  6.66M 100  6.66M   0      0 19.46M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.66M 100  6.66M   0      0 19.32M      0                              0100  6.66M 100  6.66M   0      0 19.31M      0                              0100  6.66M 100  6.66M   0      0 19.31M      0                              0
 + w=modwork/geminilakenk-7.3
 + rm -rf modwork/geminilakenk-7.3
 + mkdir -p modwork/geminilakenk-7.3
 + tar -xzf /mnt/rrp3/modules/geminilakenk-7.3-5.10.55.tgz -C modwork/geminilakenk-7.3
 ++ mktemp -d
-+ t=/tmp/tmp.3Pk2UnZmFf
-+ tar -xzf i915-dsm-geminilakenk-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.3Pk2UnZmFf
-+ '[' -d /tmp/tmp.3Pk2UnZmFf/modules ']'
-+ cp -f /tmp/tmp.3Pk2UnZmFf/modules/auxiliary.ko /tmp/tmp.3Pk2UnZmFf/modules/dmabuf.ko /tmp/tmp.3Pk2UnZmFf/modules/drm.ko /tmp/tmp.3Pk2UnZmFf/modules/drm_buddy.ko /tmp/tmp.3Pk2UnZmFf/modules/drm_client_lib.ko /tmp/tmp.3Pk2UnZmFf/modules/drm_display_helper.ko /tmp/tmp.3Pk2UnZmFf/modules/drm_kms_helper.ko /tmp/tmp.3Pk2UnZmFf/modules/drm_panel_orientation_quirks.ko /tmp/tmp.3Pk2UnZmFf/modules/gpu_buddy.ko /tmp/tmp.3Pk2UnZmFf/modules/i915-compat.ko /tmp/tmp.3Pk2UnZmFf/modules/i915.ko /tmp/tmp.3Pk2UnZmFf/modules/ttm.ko modwork/geminilakenk-7.3/
-+ rm -rf /tmp/tmp.3Pk2UnZmFf
++ t=/tmp/tmp.yqd7BvjFkP
++ tar -xzf i915-dsm-geminilakenk-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.yqd7BvjFkP
++ '[' -d /tmp/tmp.yqd7BvjFkP/modules ']'
++ cp -f /tmp/tmp.yqd7BvjFkP/modules/auxiliary.ko /tmp/tmp.yqd7BvjFkP/modules/dmabuf.ko /tmp/tmp.yqd7BvjFkP/modules/drm.ko /tmp/tmp.yqd7BvjFkP/modules/drm_buddy.ko /tmp/tmp.yqd7BvjFkP/modules/drm_client_lib.ko /tmp/tmp.yqd7BvjFkP/modules/drm_display_helper.ko /tmp/tmp.yqd7BvjFkP/modules/drm_kms_helper.ko /tmp/tmp.yqd7BvjFkP/modules/drm_panel_orientation_quirks.ko /tmp/tmp.yqd7BvjFkP/modules/gpu_buddy.ko /tmp/tmp.yqd7BvjFkP/modules/i915-compat.ko /tmp/tmp.yqd7BvjFkP/modules/i915.ko /tmp/tmp.yqd7BvjFkP/modules/ttm.ko modwork/geminilakenk-7.3/
++ rm -rf /tmp/tmp.yqd7BvjFkP
 + cd modwork/geminilakenk-7.3
 + tar -czf /tmp/geminilakenk-7.3-5.10.55.tgz.new .
 + cp /tmp/geminilakenk-7.3-5.10.55.tgz.new /mnt/rrp3/modules/geminilakenk-7.3-5.10.55.tgz
@@ -281,17 +284,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.66M 100  6.66M   0      0 17.94M      0                              0100  6.66M 100  6.66M   0      0 17.94M      0                              0100  6.66M 100  6.66M   0      0 17.93M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.66M 100  6.66M   0      0 15.79M      0                              0100  6.66M 100  6.66M   0      0 15.79M      0                              0100  6.66M 100  6.66M   0      0 15.79M      0                              0
 + w=modwork/geminilakenk-7.4
 + rm -rf modwork/geminilakenk-7.4
 + mkdir -p modwork/geminilakenk-7.4
 + tar -xzf /mnt/rrp3/modules/geminilakenk-7.4-5.10.55.tgz -C modwork/geminilakenk-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.FT5C5b8PqL
-+ tar -xzf i915-dsm-geminilakenk-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.FT5C5b8PqL
-+ '[' -d /tmp/tmp.FT5C5b8PqL/modules ']'
-+ cp -f /tmp/tmp.FT5C5b8PqL/modules/auxiliary.ko /tmp/tmp.FT5C5b8PqL/modules/dmabuf.ko /tmp/tmp.FT5C5b8PqL/modules/drm.ko /tmp/tmp.FT5C5b8PqL/modules/drm_buddy.ko /tmp/tmp.FT5C5b8PqL/modules/drm_client_lib.ko /tmp/tmp.FT5C5b8PqL/modules/drm_display_helper.ko /tmp/tmp.FT5C5b8PqL/modules/drm_kms_helper.ko /tmp/tmp.FT5C5b8PqL/modules/drm_panel_orientation_quirks.ko /tmp/tmp.FT5C5b8PqL/modules/gpu_buddy.ko /tmp/tmp.FT5C5b8PqL/modules/i915-compat.ko /tmp/tmp.FT5C5b8PqL/modules/i915.ko /tmp/tmp.FT5C5b8PqL/modules/ttm.ko modwork/geminilakenk-7.4/
-+ rm -rf /tmp/tmp.FT5C5b8PqL
++ t=/tmp/tmp.DybgdByVXw
++ tar -xzf i915-dsm-geminilakenk-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.DybgdByVXw
++ '[' -d /tmp/tmp.DybgdByVXw/modules ']'
++ cp -f /tmp/tmp.DybgdByVXw/modules/auxiliary.ko /tmp/tmp.DybgdByVXw/modules/dmabuf.ko /tmp/tmp.DybgdByVXw/modules/drm.ko /tmp/tmp.DybgdByVXw/modules/drm_buddy.ko /tmp/tmp.DybgdByVXw/modules/drm_client_lib.ko /tmp/tmp.DybgdByVXw/modules/drm_display_helper.ko /tmp/tmp.DybgdByVXw/modules/drm_kms_helper.ko /tmp/tmp.DybgdByVXw/modules/drm_panel_orientation_quirks.ko /tmp/tmp.DybgdByVXw/modules/gpu_buddy.ko /tmp/tmp.DybgdByVXw/modules/i915-compat.ko /tmp/tmp.DybgdByVXw/modules/i915.ko /tmp/tmp.DybgdByVXw/modules/ttm.ko modwork/geminilakenk-7.4/
++ rm -rf /tmp/tmp.DybgdByVXw
 + cd modwork/geminilakenk-7.4
 + tar -czf /tmp/geminilakenk-7.4-5.10.55.tgz.new .
 + cp /tmp/geminilakenk-7.4-5.10.55.tgz.new /mnt/rrp3/modules/geminilakenk-7.4-5.10.55.tgz
@@ -305,17 +308,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 16.71M      0                              0100  6.67M 100  6.67M   0      0 16.70M      0                              0100  6.67M 100  6.67M   0      0 16.70M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 14.77M      0                              0100  6.67M 100  6.67M   0      0 14.77M      0                              0100  6.67M 100  6.67M   0      0 14.77M      0                              0
 + w=modwork/icelaked-7.4
 + rm -rf modwork/icelaked-7.4
 + mkdir -p modwork/icelaked-7.4
 + tar -xzf /mnt/rrp3/modules/icelaked-7.4-5.10.55.tgz -C modwork/icelaked-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.YWsI0Nk7iV
-+ tar -xzf i915-dsm-icelaked-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.YWsI0Nk7iV
-+ '[' -d /tmp/tmp.YWsI0Nk7iV/modules ']'
-+ cp -f /tmp/tmp.YWsI0Nk7iV/modules/auxiliary.ko /tmp/tmp.YWsI0Nk7iV/modules/dmabuf.ko /tmp/tmp.YWsI0Nk7iV/modules/drm.ko /tmp/tmp.YWsI0Nk7iV/modules/drm_buddy.ko /tmp/tmp.YWsI0Nk7iV/modules/drm_display_helper.ko /tmp/tmp.YWsI0Nk7iV/modules/drm_kms_helper.ko /tmp/tmp.YWsI0Nk7iV/modules/drm_mipi_dsi.ko /tmp/tmp.YWsI0Nk7iV/modules/drm_panel_orientation_quirks.ko /tmp/tmp.YWsI0Nk7iV/modules/gpu_buddy.ko /tmp/tmp.YWsI0Nk7iV/modules/hdmi.ko /tmp/tmp.YWsI0Nk7iV/modules/i915-compat.ko /tmp/tmp.YWsI0Nk7iV/modules/i915.ko /tmp/tmp.YWsI0Nk7iV/modules/intel-gtt.ko /tmp/tmp.YWsI0Nk7iV/modules/ttm.ko modwork/icelaked-7.4/
-+ rm -rf /tmp/tmp.YWsI0Nk7iV
++ t=/tmp/tmp.VAl6vpOoxI
++ tar -xzf i915-dsm-icelaked-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.VAl6vpOoxI
++ '[' -d /tmp/tmp.VAl6vpOoxI/modules ']'
++ cp -f /tmp/tmp.VAl6vpOoxI/modules/auxiliary.ko /tmp/tmp.VAl6vpOoxI/modules/dmabuf.ko /tmp/tmp.VAl6vpOoxI/modules/drm.ko /tmp/tmp.VAl6vpOoxI/modules/drm_buddy.ko /tmp/tmp.VAl6vpOoxI/modules/drm_display_helper.ko /tmp/tmp.VAl6vpOoxI/modules/drm_kms_helper.ko /tmp/tmp.VAl6vpOoxI/modules/drm_mipi_dsi.ko /tmp/tmp.VAl6vpOoxI/modules/drm_panel_orientation_quirks.ko /tmp/tmp.VAl6vpOoxI/modules/gpu_buddy.ko /tmp/tmp.VAl6vpOoxI/modules/hdmi.ko /tmp/tmp.VAl6vpOoxI/modules/i915-compat.ko /tmp/tmp.VAl6vpOoxI/modules/i915.ko /tmp/tmp.VAl6vpOoxI/modules/intel-gtt.ko /tmp/tmp.VAl6vpOoxI/modules/ttm.ko modwork/icelaked-7.4/
++ rm -rf /tmp/tmp.VAl6vpOoxI
 + cd modwork/icelaked-7.4
 + tar -czf /tmp/icelaked-7.4-5.10.55.tgz.new .
 + cp /tmp/icelaked-7.4-5.10.55.tgz.new /mnt/rrp3/modules/icelaked-7.4-5.10.55.tgz
@@ -329,17 +332,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 13.72M      0                              0100  6.67M 100  6.67M   0      0 13.72M      0                              0100  6.67M 100  6.67M   0      0 13.71M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 16.30M      0                              0100  6.67M 100  6.67M   0      0 16.29M      0                              0100  6.67M 100  6.67M   0      0 16.29M      0                              0
 + w=modwork/r1000nk-7.2
 + rm -rf modwork/r1000nk-7.2
 + mkdir -p modwork/r1000nk-7.2
 + tar -xzf /mnt/rrp3/modules/r1000nk-7.2-5.10.55.tgz -C modwork/r1000nk-7.2
 ++ mktemp -d
-+ t=/tmp/tmp.SN91hKezJF
-+ tar -xzf i915-dsm-r1000nk-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.SN91hKezJF
-+ '[' -d /tmp/tmp.SN91hKezJF/modules ']'
-+ cp -f /tmp/tmp.SN91hKezJF/modules/auxiliary.ko /tmp/tmp.SN91hKezJF/modules/dmabuf.ko /tmp/tmp.SN91hKezJF/modules/drm.ko /tmp/tmp.SN91hKezJF/modules/drm_buddy.ko /tmp/tmp.SN91hKezJF/modules/drm_display_helper.ko /tmp/tmp.SN91hKezJF/modules/drm_kms_helper.ko /tmp/tmp.SN91hKezJF/modules/drm_mipi_dsi.ko /tmp/tmp.SN91hKezJF/modules/drm_panel_orientation_quirks.ko /tmp/tmp.SN91hKezJF/modules/gpu_buddy.ko /tmp/tmp.SN91hKezJF/modules/hdmi.ko /tmp/tmp.SN91hKezJF/modules/i2c-algo-bit.ko /tmp/tmp.SN91hKezJF/modules/i915-compat.ko /tmp/tmp.SN91hKezJF/modules/i915.ko /tmp/tmp.SN91hKezJF/modules/intel-gtt.ko /tmp/tmp.SN91hKezJF/modules/ttm.ko modwork/r1000nk-7.2/
-+ rm -rf /tmp/tmp.SN91hKezJF
++ t=/tmp/tmp.6OMpIWRWJo
++ tar -xzf i915-dsm-r1000nk-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.6OMpIWRWJo
++ '[' -d /tmp/tmp.6OMpIWRWJo/modules ']'
++ cp -f /tmp/tmp.6OMpIWRWJo/modules/auxiliary.ko /tmp/tmp.6OMpIWRWJo/modules/dmabuf.ko /tmp/tmp.6OMpIWRWJo/modules/drm.ko /tmp/tmp.6OMpIWRWJo/modules/drm_buddy.ko /tmp/tmp.6OMpIWRWJo/modules/drm_display_helper.ko /tmp/tmp.6OMpIWRWJo/modules/drm_kms_helper.ko /tmp/tmp.6OMpIWRWJo/modules/drm_mipi_dsi.ko /tmp/tmp.6OMpIWRWJo/modules/drm_panel_orientation_quirks.ko /tmp/tmp.6OMpIWRWJo/modules/gpu_buddy.ko /tmp/tmp.6OMpIWRWJo/modules/hdmi.ko /tmp/tmp.6OMpIWRWJo/modules/i2c-algo-bit.ko /tmp/tmp.6OMpIWRWJo/modules/i915-compat.ko /tmp/tmp.6OMpIWRWJo/modules/i915.ko /tmp/tmp.6OMpIWRWJo/modules/intel-gtt.ko /tmp/tmp.6OMpIWRWJo/modules/ttm.ko modwork/r1000nk-7.2/
++ rm -rf /tmp/tmp.6OMpIWRWJo
 + cd modwork/r1000nk-7.2
 + tar -czf /tmp/r1000nk-7.2-5.10.55.tgz.new .
 + cp /tmp/r1000nk-7.2-5.10.55.tgz.new /mnt/rrp3/modules/r1000nk-7.2-5.10.55.tgz
@@ -353,17 +356,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 15.32M      0                              0100  6.67M 100  6.67M   0      0 15.31M      0                              0100  6.67M 100  6.67M   0      0 15.31M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 14.52M      0                              0100  6.67M 100  6.67M   0      0 14.52M      0                              0100  6.67M 100  6.67M   0      0 14.51M      0                              0
 + w=modwork/r1000nk-7.3
 + rm -rf modwork/r1000nk-7.3
 + mkdir -p modwork/r1000nk-7.3
 + tar -xzf /mnt/rrp3/modules/r1000nk-7.3-5.10.55.tgz -C modwork/r1000nk-7.3
 ++ mktemp -d
-+ t=/tmp/tmp.tKCRUyghRa
-+ tar -xzf i915-dsm-r1000nk-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.tKCRUyghRa
-+ '[' -d /tmp/tmp.tKCRUyghRa/modules ']'
-+ cp -f /tmp/tmp.tKCRUyghRa/modules/auxiliary.ko /tmp/tmp.tKCRUyghRa/modules/dmabuf.ko /tmp/tmp.tKCRUyghRa/modules/drm.ko /tmp/tmp.tKCRUyghRa/modules/drm_buddy.ko /tmp/tmp.tKCRUyghRa/modules/drm_display_helper.ko /tmp/tmp.tKCRUyghRa/modules/drm_kms_helper.ko /tmp/tmp.tKCRUyghRa/modules/drm_mipi_dsi.ko /tmp/tmp.tKCRUyghRa/modules/drm_panel_orientation_quirks.ko /tmp/tmp.tKCRUyghRa/modules/gpu_buddy.ko /tmp/tmp.tKCRUyghRa/modules/hdmi.ko /tmp/tmp.tKCRUyghRa/modules/i2c-algo-bit.ko /tmp/tmp.tKCRUyghRa/modules/i915-compat.ko /tmp/tmp.tKCRUyghRa/modules/i915.ko /tmp/tmp.tKCRUyghRa/modules/intel-gtt.ko /tmp/tmp.tKCRUyghRa/modules/ttm.ko modwork/r1000nk-7.3/
-+ rm -rf /tmp/tmp.tKCRUyghRa
++ t=/tmp/tmp.7Yl8Fs7cAx
++ tar -xzf i915-dsm-r1000nk-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.7Yl8Fs7cAx
++ '[' -d /tmp/tmp.7Yl8Fs7cAx/modules ']'
++ cp -f /tmp/tmp.7Yl8Fs7cAx/modules/auxiliary.ko /tmp/tmp.7Yl8Fs7cAx/modules/dmabuf.ko /tmp/tmp.7Yl8Fs7cAx/modules/drm.ko /tmp/tmp.7Yl8Fs7cAx/modules/drm_buddy.ko /tmp/tmp.7Yl8Fs7cAx/modules/drm_display_helper.ko /tmp/tmp.7Yl8Fs7cAx/modules/drm_kms_helper.ko /tmp/tmp.7Yl8Fs7cAx/modules/drm_mipi_dsi.ko /tmp/tmp.7Yl8Fs7cAx/modules/drm_panel_orientation_quirks.ko /tmp/tmp.7Yl8Fs7cAx/modules/gpu_buddy.ko /tmp/tmp.7Yl8Fs7cAx/modules/hdmi.ko /tmp/tmp.7Yl8Fs7cAx/modules/i2c-algo-bit.ko /tmp/tmp.7Yl8Fs7cAx/modules/i915-compat.ko /tmp/tmp.7Yl8Fs7cAx/modules/i915.ko /tmp/tmp.7Yl8Fs7cAx/modules/intel-gtt.ko /tmp/tmp.7Yl8Fs7cAx/modules/ttm.ko modwork/r1000nk-7.3/
++ rm -rf /tmp/tmp.7Yl8Fs7cAx
 + cd modwork/r1000nk-7.3
 + tar -czf /tmp/r1000nk-7.3-5.10.55.tgz.new .
 + cp /tmp/r1000nk-7.3-5.10.55.tgz.new /mnt/rrp3/modules/r1000nk-7.3-5.10.55.tgz
@@ -377,17 +380,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 18.28M      0                              0100  6.67M 100  6.67M   0      0 18.28M      0                              0100  6.67M 100  6.67M   0      0 18.27M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 14.61M      0                              0100  6.67M 100  6.67M   0      0 14.60M      0                              0100  6.67M 100  6.67M   0      0 14.60M      0                              0
 + w=modwork/r1000nk-7.4
 + rm -rf modwork/r1000nk-7.4
 + mkdir -p modwork/r1000nk-7.4
 + tar -xzf /mnt/rrp3/modules/r1000nk-7.4-5.10.55.tgz -C modwork/r1000nk-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.KPkbmMnGyb
-+ tar -xzf i915-dsm-r1000nk-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.KPkbmMnGyb
-+ '[' -d /tmp/tmp.KPkbmMnGyb/modules ']'
-+ cp -f /tmp/tmp.KPkbmMnGyb/modules/auxiliary.ko /tmp/tmp.KPkbmMnGyb/modules/dmabuf.ko /tmp/tmp.KPkbmMnGyb/modules/drm.ko /tmp/tmp.KPkbmMnGyb/modules/drm_buddy.ko /tmp/tmp.KPkbmMnGyb/modules/drm_display_helper.ko /tmp/tmp.KPkbmMnGyb/modules/drm_kms_helper.ko /tmp/tmp.KPkbmMnGyb/modules/drm_mipi_dsi.ko /tmp/tmp.KPkbmMnGyb/modules/drm_panel_orientation_quirks.ko /tmp/tmp.KPkbmMnGyb/modules/gpu_buddy.ko /tmp/tmp.KPkbmMnGyb/modules/hdmi.ko /tmp/tmp.KPkbmMnGyb/modules/i2c-algo-bit.ko /tmp/tmp.KPkbmMnGyb/modules/i915-compat.ko /tmp/tmp.KPkbmMnGyb/modules/i915.ko /tmp/tmp.KPkbmMnGyb/modules/intel-gtt.ko /tmp/tmp.KPkbmMnGyb/modules/ttm.ko modwork/r1000nk-7.4/
-+ rm -rf /tmp/tmp.KPkbmMnGyb
++ t=/tmp/tmp.GtyxD5bRf7
++ tar -xzf i915-dsm-r1000nk-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.GtyxD5bRf7
++ '[' -d /tmp/tmp.GtyxD5bRf7/modules ']'
++ cp -f /tmp/tmp.GtyxD5bRf7/modules/auxiliary.ko /tmp/tmp.GtyxD5bRf7/modules/dmabuf.ko /tmp/tmp.GtyxD5bRf7/modules/drm.ko /tmp/tmp.GtyxD5bRf7/modules/drm_buddy.ko /tmp/tmp.GtyxD5bRf7/modules/drm_display_helper.ko /tmp/tmp.GtyxD5bRf7/modules/drm_kms_helper.ko /tmp/tmp.GtyxD5bRf7/modules/drm_mipi_dsi.ko /tmp/tmp.GtyxD5bRf7/modules/drm_panel_orientation_quirks.ko /tmp/tmp.GtyxD5bRf7/modules/gpu_buddy.ko /tmp/tmp.GtyxD5bRf7/modules/hdmi.ko /tmp/tmp.GtyxD5bRf7/modules/i2c-algo-bit.ko /tmp/tmp.GtyxD5bRf7/modules/i915-compat.ko /tmp/tmp.GtyxD5bRf7/modules/i915.ko /tmp/tmp.GtyxD5bRf7/modules/intel-gtt.ko /tmp/tmp.GtyxD5bRf7/modules/ttm.ko modwork/r1000nk-7.4/
++ rm -rf /tmp/tmp.GtyxD5bRf7
 + cd modwork/r1000nk-7.4
 + tar -czf /tmp/r1000nk-7.4-5.10.55.tgz.new .
 + cp /tmp/r1000nk-7.4-5.10.55.tgz.new /mnt/rrp3/modules/r1000nk-7.4-5.10.55.tgz
@@ -401,17 +404,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 15.67M      0                              0100  6.67M 100  6.67M   0      0 15.67M      0                              0100  6.67M 100  6.67M   0      0 15.67M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 17.29M      0                              0100  6.67M 100  6.67M   0      0 17.29M      0                              0100  6.67M 100  6.67M   0      0 17.28M      0                              0
 + w=modwork/v1000nk-7.2
 + rm -rf modwork/v1000nk-7.2
 + mkdir -p modwork/v1000nk-7.2
 + tar -xzf /mnt/rrp3/modules/v1000nk-7.2-5.10.55.tgz -C modwork/v1000nk-7.2
 ++ mktemp -d
-+ t=/tmp/tmp.e6YgkZ8vGS
-+ tar -xzf i915-dsm-v1000nk-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.e6YgkZ8vGS
-+ '[' -d /tmp/tmp.e6YgkZ8vGS/modules ']'
-+ cp -f /tmp/tmp.e6YgkZ8vGS/modules/auxiliary.ko /tmp/tmp.e6YgkZ8vGS/modules/dmabuf.ko /tmp/tmp.e6YgkZ8vGS/modules/drm.ko /tmp/tmp.e6YgkZ8vGS/modules/drm_buddy.ko /tmp/tmp.e6YgkZ8vGS/modules/drm_display_helper.ko /tmp/tmp.e6YgkZ8vGS/modules/drm_kms_helper.ko /tmp/tmp.e6YgkZ8vGS/modules/drm_mipi_dsi.ko /tmp/tmp.e6YgkZ8vGS/modules/drm_panel_orientation_quirks.ko /tmp/tmp.e6YgkZ8vGS/modules/gpu_buddy.ko /tmp/tmp.e6YgkZ8vGS/modules/hdmi.ko /tmp/tmp.e6YgkZ8vGS/modules/i2c-algo-bit.ko /tmp/tmp.e6YgkZ8vGS/modules/i915-compat.ko /tmp/tmp.e6YgkZ8vGS/modules/i915.ko /tmp/tmp.e6YgkZ8vGS/modules/intel-gtt.ko /tmp/tmp.e6YgkZ8vGS/modules/ttm.ko modwork/v1000nk-7.2/
-+ rm -rf /tmp/tmp.e6YgkZ8vGS
++ t=/tmp/tmp.7A6Eswgsm6
++ tar -xzf i915-dsm-v1000nk-7.2-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.7A6Eswgsm6
++ '[' -d /tmp/tmp.7A6Eswgsm6/modules ']'
++ cp -f /tmp/tmp.7A6Eswgsm6/modules/auxiliary.ko /tmp/tmp.7A6Eswgsm6/modules/dmabuf.ko /tmp/tmp.7A6Eswgsm6/modules/drm.ko /tmp/tmp.7A6Eswgsm6/modules/drm_buddy.ko /tmp/tmp.7A6Eswgsm6/modules/drm_display_helper.ko /tmp/tmp.7A6Eswgsm6/modules/drm_kms_helper.ko /tmp/tmp.7A6Eswgsm6/modules/drm_mipi_dsi.ko /tmp/tmp.7A6Eswgsm6/modules/drm_panel_orientation_quirks.ko /tmp/tmp.7A6Eswgsm6/modules/gpu_buddy.ko /tmp/tmp.7A6Eswgsm6/modules/hdmi.ko /tmp/tmp.7A6Eswgsm6/modules/i2c-algo-bit.ko /tmp/tmp.7A6Eswgsm6/modules/i915-compat.ko /tmp/tmp.7A6Eswgsm6/modules/i915.ko /tmp/tmp.7A6Eswgsm6/modules/intel-gtt.ko /tmp/tmp.7A6Eswgsm6/modules/ttm.ko modwork/v1000nk-7.2/
++ rm -rf /tmp/tmp.7A6Eswgsm6
 + cd modwork/v1000nk-7.2
 + tar -czf /tmp/v1000nk-7.2-5.10.55.tgz.new .
 + cp /tmp/v1000nk-7.2-5.10.55.tgz.new /mnt/rrp3/modules/v1000nk-7.2-5.10.55.tgz
@@ -425,17 +428,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 19.95M      0                              0100  6.67M 100  6.67M   0      0 19.95M      0                              0100  6.67M 100  6.67M   0      0 19.95M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 15.27M      0                              0100  6.67M 100  6.67M   0      0 15.26M      0                              0100  6.67M 100  6.67M   0      0 15.26M      0                              0
 + w=modwork/v1000nk-7.3
 + rm -rf modwork/v1000nk-7.3
 + mkdir -p modwork/v1000nk-7.3
 + tar -xzf /mnt/rrp3/modules/v1000nk-7.3-5.10.55.tgz -C modwork/v1000nk-7.3
 ++ mktemp -d
-+ t=/tmp/tmp.OKeyfOTFs9
-+ tar -xzf i915-dsm-v1000nk-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.OKeyfOTFs9
-+ '[' -d /tmp/tmp.OKeyfOTFs9/modules ']'
-+ cp -f /tmp/tmp.OKeyfOTFs9/modules/auxiliary.ko /tmp/tmp.OKeyfOTFs9/modules/dmabuf.ko /tmp/tmp.OKeyfOTFs9/modules/drm.ko /tmp/tmp.OKeyfOTFs9/modules/drm_buddy.ko /tmp/tmp.OKeyfOTFs9/modules/drm_display_helper.ko /tmp/tmp.OKeyfOTFs9/modules/drm_kms_helper.ko /tmp/tmp.OKeyfOTFs9/modules/drm_mipi_dsi.ko /tmp/tmp.OKeyfOTFs9/modules/drm_panel_orientation_quirks.ko /tmp/tmp.OKeyfOTFs9/modules/gpu_buddy.ko /tmp/tmp.OKeyfOTFs9/modules/hdmi.ko /tmp/tmp.OKeyfOTFs9/modules/i2c-algo-bit.ko /tmp/tmp.OKeyfOTFs9/modules/i915-compat.ko /tmp/tmp.OKeyfOTFs9/modules/i915.ko /tmp/tmp.OKeyfOTFs9/modules/intel-gtt.ko /tmp/tmp.OKeyfOTFs9/modules/ttm.ko modwork/v1000nk-7.3/
-+ rm -rf /tmp/tmp.OKeyfOTFs9
++ t=/tmp/tmp.CQFTSzVBCS
++ tar -xzf i915-dsm-v1000nk-7.3-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.CQFTSzVBCS
++ '[' -d /tmp/tmp.CQFTSzVBCS/modules ']'
++ cp -f /tmp/tmp.CQFTSzVBCS/modules/auxiliary.ko /tmp/tmp.CQFTSzVBCS/modules/dmabuf.ko /tmp/tmp.CQFTSzVBCS/modules/drm.ko /tmp/tmp.CQFTSzVBCS/modules/drm_buddy.ko /tmp/tmp.CQFTSzVBCS/modules/drm_display_helper.ko /tmp/tmp.CQFTSzVBCS/modules/drm_kms_helper.ko /tmp/tmp.CQFTSzVBCS/modules/drm_mipi_dsi.ko /tmp/tmp.CQFTSzVBCS/modules/drm_panel_orientation_quirks.ko /tmp/tmp.CQFTSzVBCS/modules/gpu_buddy.ko /tmp/tmp.CQFTSzVBCS/modules/hdmi.ko /tmp/tmp.CQFTSzVBCS/modules/i2c-algo-bit.ko /tmp/tmp.CQFTSzVBCS/modules/i915-compat.ko /tmp/tmp.CQFTSzVBCS/modules/i915.ko /tmp/tmp.CQFTSzVBCS/modules/intel-gtt.ko /tmp/tmp.CQFTSzVBCS/modules/ttm.ko modwork/v1000nk-7.3/
++ rm -rf /tmp/tmp.CQFTSzVBCS
 + cd modwork/v1000nk-7.3
 + tar -czf /tmp/v1000nk-7.3-5.10.55.tgz.new .
 + cp /tmp/v1000nk-7.3-5.10.55.tgz.new /mnt/rrp3/modules/v1000nk-7.3-5.10.55.tgz
@@ -449,17 +452,17 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 17.85M      0                              0100  6.67M 100  6.67M   0      0 17.84M      0                              0100  6.67M 100  6.67M   0      0 17.84M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 15.32M      0                              0100  6.67M 100  6.67M   0      0 15.32M      0                              0100  6.67M 100  6.67M   0      0 15.31M      0                              0
 + w=modwork/v1000nk-7.4
 + rm -rf modwork/v1000nk-7.4
 + mkdir -p modwork/v1000nk-7.4
 + tar -xzf /mnt/rrp3/modules/v1000nk-7.4-5.10.55.tgz -C modwork/v1000nk-7.4
 ++ mktemp -d
-+ t=/tmp/tmp.YbOcfrwGan
-+ tar -xzf i915-dsm-v1000nk-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.YbOcfrwGan
-+ '[' -d /tmp/tmp.YbOcfrwGan/modules ']'
-+ cp -f /tmp/tmp.YbOcfrwGan/modules/auxiliary.ko /tmp/tmp.YbOcfrwGan/modules/dmabuf.ko /tmp/tmp.YbOcfrwGan/modules/drm.ko /tmp/tmp.YbOcfrwGan/modules/drm_buddy.ko /tmp/tmp.YbOcfrwGan/modules/drm_display_helper.ko /tmp/tmp.YbOcfrwGan/modules/drm_kms_helper.ko /tmp/tmp.YbOcfrwGan/modules/drm_mipi_dsi.ko /tmp/tmp.YbOcfrwGan/modules/drm_panel_orientation_quirks.ko /tmp/tmp.YbOcfrwGan/modules/gpu_buddy.ko /tmp/tmp.YbOcfrwGan/modules/hdmi.ko /tmp/tmp.YbOcfrwGan/modules/i2c-algo-bit.ko /tmp/tmp.YbOcfrwGan/modules/i915-compat.ko /tmp/tmp.YbOcfrwGan/modules/i915.ko /tmp/tmp.YbOcfrwGan/modules/intel-gtt.ko /tmp/tmp.YbOcfrwGan/modules/ttm.ko modwork/v1000nk-7.4/
-+ rm -rf /tmp/tmp.YbOcfrwGan
++ t=/tmp/tmp.3mVLEgup7D
++ tar -xzf i915-dsm-v1000nk-7.4-1.6.18.56.261028.0.tar.gz -C /tmp/tmp.3mVLEgup7D
++ '[' -d /tmp/tmp.3mVLEgup7D/modules ']'
++ cp -f /tmp/tmp.3mVLEgup7D/modules/auxiliary.ko /tmp/tmp.3mVLEgup7D/modules/dmabuf.ko /tmp/tmp.3mVLEgup7D/modules/drm.ko /tmp/tmp.3mVLEgup7D/modules/drm_buddy.ko /tmp/tmp.3mVLEgup7D/modules/drm_display_helper.ko /tmp/tmp.3mVLEgup7D/modules/drm_kms_helper.ko /tmp/tmp.3mVLEgup7D/modules/drm_mipi_dsi.ko /tmp/tmp.3mVLEgup7D/modules/drm_panel_orientation_quirks.ko /tmp/tmp.3mVLEgup7D/modules/gpu_buddy.ko /tmp/tmp.3mVLEgup7D/modules/hdmi.ko /tmp/tmp.3mVLEgup7D/modules/i2c-algo-bit.ko /tmp/tmp.3mVLEgup7D/modules/i915-compat.ko /tmp/tmp.3mVLEgup7D/modules/i915.ko /tmp/tmp.3mVLEgup7D/modules/intel-gtt.ko /tmp/tmp.3mVLEgup7D/modules/ttm.ko modwork/v1000nk-7.4/
++ rm -rf /tmp/tmp.3mVLEgup7D
 + cd modwork/v1000nk-7.4
 + tar -czf /tmp/v1000nk-7.4-5.10.55.tgz.new .
 + cp /tmp/v1000nk-7.4-5.10.55.tgz.new /mnt/rrp3/modules/v1000nk-7.4-5.10.55.tgz
@@ -475,13 +478,13 @@ RR_RELEASE=""
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
   0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 65.59M      0                              0100  6.67M 100  6.67M   0      0 65.54M      0                              0100  6.67M 100  6.67M   0      0 65.49M      0                              0
+  0      0   0      0   0      0      0      0                              0100  6.67M 100  6.67M   0      0 28.18M      0                              0100  6.67M 100  6.67M   0      0 28.18M      0                              0100  6.67M 100  6.67M   0      0 28.16M      0                              0
 ++ mktemp -d
-+ t=/tmp/tmp.4ZqlC4PeCx
-+ tar -xzf i915-fw.tar.gz -C /tmp/tmp.4ZqlC4PeCx
++ t=/tmp/tmp.m5XfjNhxIz
++ tar -xzf i915-fw.tar.gz -C /tmp/tmp.m5XfjNhxIz
 + mkdir -p fwwork/i915
-+ cp -f /tmp/tmp.4ZqlC4PeCx/firmware/adlp_dmc.bin /tmp/tmp.4ZqlC4PeCx/firmware/adlp_dmc_ver2_16.bin /tmp/tmp.4ZqlC4PeCx/firmware/adlp_guc_69.0.3.bin /tmp/tmp.4ZqlC4PeCx/firmware/adlp_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/adlp_guc_70.bin /tmp/tmp.4ZqlC4PeCx/firmware/adls_dmc_ver2_01.bin /tmp/tmp.4ZqlC4PeCx/firmware/bmg_dmc.bin /tmp/tmp.4ZqlC4PeCx/firmware/bxt_dmc_ver1_07.bin /tmp/tmp.4ZqlC4PeCx/firmware/bxt_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/bxt_huc_2.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/cml_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/cml_huc_4.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/dg1_dmc_ver2_02.bin /tmp/tmp.4ZqlC4PeCx/firmware/dg1_guc_70.bin /tmp/tmp.4ZqlC4PeCx/firmware/dg1_huc.bin /tmp/tmp.4ZqlC4PeCx/firmware/dg2_dmc_ver2_08.bin /tmp/tmp.4ZqlC4PeCx/firmware/dg2_guc_70.bin /tmp/tmp.4ZqlC4PeCx/firmware/dg2_huc_gsc.bin /tmp/tmp.4ZqlC4PeCx/firmware/ehl_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/ehl_huc_9.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/glk_dmc_ver1_04.bin /tmp/tmp.4ZqlC4PeCx/firmware/glk_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/glk_huc_4.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/icl_dmc_ver1_09.bin /tmp/tmp.4ZqlC4PeCx/firmware/icl_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/icl_huc_9.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/kbl_dmc_ver1_04.bin /tmp/tmp.4ZqlC4PeCx/firmware/kbl_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/kbl_huc_4.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/mtl_dmc.bin /tmp/tmp.4ZqlC4PeCx/firmware/mtl_gsc_1.bin /tmp/tmp.4ZqlC4PeCx/firmware/mtl_guc_70.bin /tmp/tmp.4ZqlC4PeCx/firmware/mtl_huc_gsc.bin /tmp/tmp.4ZqlC4PeCx/firmware/rkl_dmc_ver2_03.bin /tmp/tmp.4ZqlC4PeCx/firmware/skl_dmc_ver1_27.bin /tmp/tmp.4ZqlC4PeCx/firmware/skl_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/skl_huc_2.0.0.bin /tmp/tmp.4ZqlC4PeCx/firmware/tgl_dmc_ver2_12.bin /tmp/tmp.4ZqlC4PeCx/firmware/tgl_guc_69.0.3.bin /tmp/tmp.4ZqlC4PeCx/firmware/tgl_guc_70.1.1.bin /tmp/tmp.4ZqlC4PeCx/firmware/tgl_guc_70.bin /tmp/tmp.4ZqlC4PeCx/firmware/tgl_huc.bin /tmp/tmp.4ZqlC4PeCx/firmware/tgl_huc_7.9.3.bin /tmp/tmp.4ZqlC4PeCx/firmware/xe2lpd_dmc.bin /tmp/tmp.4ZqlC4PeCx/firmware/xe3lpd_3002_dmc.bin /tmp/tmp.4ZqlC4PeCx/firmware/xe3lpd_dmc.bin fwwork/i915/
-+ rm -rf /tmp/tmp.4ZqlC4PeCx
++ cp -f /tmp/tmp.m5XfjNhxIz/firmware/adlp_dmc.bin /tmp/tmp.m5XfjNhxIz/firmware/adlp_dmc_ver2_16.bin /tmp/tmp.m5XfjNhxIz/firmware/adlp_guc_69.0.3.bin /tmp/tmp.m5XfjNhxIz/firmware/adlp_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/adlp_guc_70.bin /tmp/tmp.m5XfjNhxIz/firmware/adls_dmc_ver2_01.bin /tmp/tmp.m5XfjNhxIz/firmware/bmg_dmc.bin /tmp/tmp.m5XfjNhxIz/firmware/bxt_dmc_ver1_07.bin /tmp/tmp.m5XfjNhxIz/firmware/bxt_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/bxt_huc_2.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/cml_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/cml_huc_4.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/dg1_dmc_ver2_02.bin /tmp/tmp.m5XfjNhxIz/firmware/dg1_guc_70.bin /tmp/tmp.m5XfjNhxIz/firmware/dg1_huc.bin /tmp/tmp.m5XfjNhxIz/firmware/dg2_dmc_ver2_08.bin /tmp/tmp.m5XfjNhxIz/firmware/dg2_guc_70.bin /tmp/tmp.m5XfjNhxIz/firmware/dg2_huc_gsc.bin /tmp/tmp.m5XfjNhxIz/firmware/ehl_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/ehl_huc_9.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/glk_dmc_ver1_04.bin /tmp/tmp.m5XfjNhxIz/firmware/glk_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/glk_huc_4.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/icl_dmc_ver1_09.bin /tmp/tmp.m5XfjNhxIz/firmware/icl_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/icl_huc_9.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/kbl_dmc_ver1_04.bin /tmp/tmp.m5XfjNhxIz/firmware/kbl_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/kbl_huc_4.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/mtl_dmc.bin /tmp/tmp.m5XfjNhxIz/firmware/mtl_gsc_1.bin /tmp/tmp.m5XfjNhxIz/firmware/mtl_guc_70.bin /tmp/tmp.m5XfjNhxIz/firmware/mtl_huc_gsc.bin /tmp/tmp.m5XfjNhxIz/firmware/rkl_dmc_ver2_03.bin /tmp/tmp.m5XfjNhxIz/firmware/skl_dmc_ver1_27.bin /tmp/tmp.m5XfjNhxIz/firmware/skl_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/skl_huc_2.0.0.bin /tmp/tmp.m5XfjNhxIz/firmware/tgl_dmc_ver2_12.bin /tmp/tmp.m5XfjNhxIz/firmware/tgl_guc_69.0.3.bin /tmp/tmp.m5XfjNhxIz/firmware/tgl_guc_70.1.1.bin /tmp/tmp.m5XfjNhxIz/firmware/tgl_guc_70.bin /tmp/tmp.m5XfjNhxIz/firmware/tgl_huc.bin /tmp/tmp.m5XfjNhxIz/firmware/tgl_huc_7.9.3.bin /tmp/tmp.m5XfjNhxIz/firmware/xe2lpd_dmc.bin /tmp/tmp.m5XfjNhxIz/firmware/xe3lpd_3002_dmc.bin /tmp/tmp.m5XfjNhxIz/firmware/xe3lpd_dmc.bin fwwork/i915/
++ rm -rf /tmp/tmp.m5XfjNhxIz
 + cd fwwork
 + tar -czf /tmp/firmware.tgz.new .
 + cp /tmp/firmware.tgz.new /mnt/rrp3/modules/firmware.tgz
@@ -491,11 +494,11 @@ RR_RELEASE=""
 + curl -fL --retry 5 --retry-all-errors --retry-delay 2 -o syno_hdd_db.sh https://raw.githubusercontent.com/007revad/Synology_HDD_db/v3.7.140/syno_hdd_db.sh
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
-  0      0   0      0   0      0      0      0                              0100 121.8k 100 121.8k   0      0 239.8k      0                              0100 121.8k 100 121.8k   0      0 239.8k      0                              0100 121.8k 100 121.8k   0      0 239.7k      0                              0
+  0      0   0      0   0      0      0      0                              0100 121.8k 100 121.8k   0      0 863.2k      0                              0100 121.8k 100 121.8k   0      0 862.8k      0                              0100 121.8k 100 121.8k   0      0 862.3k      0                              0
 + curl -fL --retry 5 --retry-all-errors --retry-delay 2 -o install.sh https://raw.githubusercontent.com/RROrg/rr-addons/main/hdddb/install.sh
   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
                                  Dload  Upload  Total   Spent   Left   Speed
-  0      0   0      0   0      0      0      0                              0100   1559 100   1559   0      0  12924      0                              0100   1559 100   1559   0      0  12914      0                              0100   1559 100   1559   0      0  12901      0                              0
+  0      0   0      0   0      0      0      0                              0100   1559 100   1559   0      0  12592      0                              0100   1559 100   1559   0      0  12585      0                              0100   1559 100   1559   0      0  12578      0                              0
 + grep -m1 scriptver= syno_hdd_db.sh
 scriptver="v3.7.140"
 + rm -rf hddwork
@@ -506,7 +509,7 @@ scriptver="v3.7.140"
 + tar -czf /tmp/hdddb-all.tgz .
 + cp /tmp/hdddb-all.tgz /mnt/rrp3/addons/hdddb/all.tgz
 + ls -lh /mnt/rrp3/addons/hdddb/all.tgz
--rw-r--r-- 1 root root 29K Nov 22 23:45 /mnt/rrp3/addons/hdddb/all.tgz
+-rw-r--r-- 1 root root 29K Nov 22 23:51 /mnt/rrp3/addons/hdddb/all.tgz
 + log '[8/10] Unmount'
 + echo '===== [8/10] Unmount ====='
 ===== [8/10] Unmount =====
@@ -518,15 +521,16 @@ scriptver="v3.7.140"
 ===== [9/10] Package image and checksums =====
 + mv rr.img rr-26.11.01.img
 + zip -6 rr-26.11.01.img.zip rr-26.11.01.img
-  adding: rr-26.11.01.img (deflated 52%)
+  adding: rr-26.11.01.img (deflated 51%)
 + sha256sum rr-26.11.01.img rr-26.11.01.img.zip
 + cat sha256sum-26.11.01.txt
-28d22668d2e5e2aa6875c08a59a7d6675d3e85355f7b0441d4fcbbb1f04365cf  rr-26.11.01.img
-393b06711634cf57ea565b16b3d50d51f813bc1ad1df8c3d01a7c730b3304536  rr-26.11.01.img.zip
+5b20cf119e6cc25c752eca207cb64725e50823dd65ba80c3a657224d05fb7521  rr-26.11.01.img
+d87325e4d4c360f904c1352c03fc9841b99e20c35b6b6dd60f18c5e944d9ab90  rr-26.11.01.img.zip
 + log '[10/10] Upload assets to release'
 + echo '===== [10/10] Upload assets to release ====='
 ===== [10/10] Upload assets to release =====
-+ gh release upload 26.11.01 rr-26.11.01.img.zip sha256sum-26.11.01.txt --clobber
-failed to run git: fatal: not a git repository (or any of the parent directories): .git
-
-BUILD_RC=1
++ cd .
++ gh release upload 26.11.01 /root/rrbuild/rr-26.11.01.img.zip /root/rrbuild/sha256sum-26.11.01.txt --repo nanxi9899/rr --clobber
++ echo '===== DONE ====='
+===== DONE =====
+BUILD_RC=0
