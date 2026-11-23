@@ -1,0 +1,42 @@
+name: Cleanup old releases and tags
+
+on:
+  push:
+    paths:
+      - '.github/workflows/cleanup-old-versions.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old release and all old tags (keep 26.11.01 only)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          echo "=== BEFORE: releases ==="
+          gh release list --repo nanxi9899/rr
+          echo "=== BEFORE: tags ==="
+          gh api 'repos/nanxi9899/rr/tags?per_page=100' --jq '.[].name'
+
+          echo "=== Delete old release 26.11.0 ==="
+          gh release delete 26.11.0 --repo nanxi9899/rr --yes || true
+
+          echo "=== Delete old tags ==="
+          for t in $(gh api 'repos/nanxi9899/rr/tags?per_page=100' --jq '.[].name'); do
+            if [ "$t" = "26.11.01" ]; then
+              echo "  KEEP tag: $t"
+              continue
+            fi
+            gh api --method DELETE "repos/nanxi9899/rr/git/refs/tags/$t" && echo "  DELETED tag: $t" || echo "  FAILED tag: $t"
+          done
+
+          echo "=== AFTER: releases ==="
+          gh release list --repo nanxi9899/rr
+          echo "=== AFTER: tags ==="
+          gh api 'repos/nanxi9899/rr/tags?per_page=100' --jq '.[].name'
+          echo "=== CLEANUP DONE ==="
