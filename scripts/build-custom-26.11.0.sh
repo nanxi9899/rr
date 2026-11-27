@@ -13,7 +13,9 @@ I915_TAG="I915_6.18.56_LTS_261028.0"
 ASSET="rr-${VERSION}.img.zip"
 IMG_NAME="rr-${VERSION}.img"
 WORKDIR="/root/rrbuild"
-ASSETS_DIR="${GITHUB_WORKSPACE:-.}/assets"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+ASSETS_DIR="${REPO_ROOT}/assets"
 
 log() { echo "===== $* ====="; }
 
@@ -118,7 +120,7 @@ sha256sum "${IMG_NAME}" "${ASSET}" > "sha256sum-${VERSION}.txt"
 cat "sha256sum-${VERSION}.txt"
 
 log "[10/10] Create release and upload assets"
-cd "${GITHUB_WORKSPACE:-.}"
+cd "${REPO_ROOT}"
 gh release create "${VERSION}" --target main \
   --title "RR ${VERSION}" \
   --notes "Custom build based on official 26.9.0 base. Bundled: i915 6.18.56 LTS 261028.0 (16 platforms), hdddb v3.7.140." \
