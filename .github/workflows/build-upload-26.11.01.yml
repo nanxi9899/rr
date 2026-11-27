@@ -42,22 +42,3 @@ jobs:
           name: build-diag-26.11.01
           path: build.log
           retention-days: 7
-
-      - name: Publish build log to repo
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -f build.log ]; then
-            B64=$(base64 -w0 build.log)
-            OLD_SHA=$(gh api repos/nanxi9899/rr/contents/build-diag.log --jq .sha 2>/dev/null || true)
-            if [ -n "$OLD_SHA" ]; then
-              gh api --method PUT repos/nanxi9899/rr/contents/build-diag.log \
-                -f message="ci: publish build diagnostic log" \
-                -f content="$B64" -f branch="main" -f sha="$OLD_SHA" || true
-            else
-              gh api --method PUT repos/nanxi9899/rr/contents/build-diag.log \
-                -f message="ci: publish build diagnostic log" \
-                -f content="$B64" -f branch="main" || true
-            fi
-          fi
