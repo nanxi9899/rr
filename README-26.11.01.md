@@ -62,4 +62,21 @@ sudo dd if=rr-26.11.01.img of=/dev/sdX bs=1M status=progress
 - i915 驱动包：16 个平台包均通过官方校验
 - HDD db：v3.7.140 源码包 `syno_hdd_db.sh`
 
+## 素材入库（vendored assets）
+
+定制素材已随仓库提交到 `assets/` 目录，构建脚本 `scripts/build-custom-26.11.01.sh` 直接使用本地副本，不再在 CI 阶段从外部 release 下载 i915 包或 hdddb 脚本：
+
+```
+assets/
+├── i915/
+│   └── i915-dsm-<平台>-<DSM 版本>-1.6.18.56.261028.0.tar.gz   # 16 个平台包
+└── hdddb/
+    ├── hdddb.sh        # syno_hdd_db.sh v3.7.140
+    └── install.sh      # RR addon late/uninstall 安装脚本（与 RROrg/rr-addons 上游一致）
+```
+
+- i915 上游来源：`moetayuko/intel-gpu-i915-backports` tag `I915_6.18.56_LTS_261028.0`。
+- hdddb 上游来源：`007revad/Synology_HDD_db` tag `v3.7.140`。
+- 基础镜像仍在 CI 阶段从 `RROrg/rr` 官方 release 拉取（26.9.0）。
+
 上传发布操作见 [RELEASE-UPLOAD-GUIDE-26.11.01.md](RELEASE-UPLOAD-GUIDE-26.11.01.md)。

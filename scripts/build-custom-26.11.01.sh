@@ -1,18 +1,26 @@
 #!/usr/bin/env bash
 # Build RR custom bootloader 26.11.01 from official 26.9.0 base image.
 # Runs inside GitHub Actions ubuntu-latest as root.
+#
+# 定制素材（i915 6.18.56 回移包 ×16、hdddb v3.7.140）已随仓库入库到 assets/ 目录，
+# 构建过程不再从外部 release 下载这两类素材；仅基础镜像仍取自 RROrg/rr 官方 release。
 set -euo pipefail
 
 VERSION="26.11.01"
 BASE_VERSION="26.9.0"
 VER_I915="1.6.18.56.261028.0"
 I915_TAG="I915_6.18.56_LTS_261028.0"
-I915_BASE="https://github.com/moetayuko/intel-gpu-i915-backports/releases/download/${I915_TAG}"
 ASSET="rr-${VERSION}.img.zip"
 IMG_NAME="rr-${VERSION}.img"
 WORKDIR="/root/rrbuild"
+ASSETS_DIR="${GITHUB_WORKSPACE:-.}/assets"
 
 log() { echo "===== $* ====="; }
+
+log "Check vendored assets under ${ASSETS_DIR}"
+[ -d "${ASSETS_DIR}/i915" ] || { echo "ERROR: missing assets/i915"; exit 1; }
+[ -f "${ASSETS_DIR}/hdddb/hdddb.sh" ] || { echo "ERROR: missing assets/hdddb/hdddb.sh"; exit 1; }
+[ -f "${ASSETS_DIR}/hdddb/install.sh" ] || { echo "ERROR: missing assets/hdddb/install.sh"; exit 1; }
 
 rm -rf "$WORKDIR"
 mkdir -p "$WORKDIR"
@@ -62,12 +70,12 @@ for combo in ${PLATFORMS}; do
   modfile="${combo}-5.10.55.tgz"
   i915file="i915-dsm-${combo}-${VER_I915}.tar.gz"
   [ -f "/mnt/rrp3/modules/${modfile}" ] || { echo "ERROR: missing ${modfile}"; exit 1; }
-  curl -fL --retry 5 --retry-all-errors --retry-delay 2 -o "${i915file}" "${I915_BASE}/${i915file}"
+  [ -f "${ASSETS_DIR}/i915/${i915file}" ] || { echo "ERROR: missing vendored ${i915file}"; exit 1; }
   w="modwork/${combo}"
   rm -rf "${w}" && mkdir -p "${w}"
   tar -xzf "/mnt/rrp3/modules/${modfile}" -C "${w}"
   t=$(mktemp -d)
-  tar -xzf "${i915file}" -C "${t}"
+  tar -xzf "${ASSETS_DIR}/i915/${i915file}" -C "${t}"
   [ -d "${t}/modules" ] || { echo "ERROR: no modules dir in ${i915file}"; exit 1; }
   cp -f "${t}"/modules/*.ko "${w}"/
   rm -rf "${t}"
@@ -79,9 +87,10 @@ done
 log "[6/10] Merge i915 firmware"
 rm -rf fwwork && mkdir -p fwwork
 tar -xzf /mnt/rrp3/modules/firmware.tgz -C fwwork
-curl -fL --retry 5 --retry-all-errors --retry-delay 2 -o i915-fw.tar.gz "${I915_BASE}/i915-dsm-epyc7002-7.4-${VER_I915}.tar.gz"
+FW_BUNDLE="${ASSETS_DIR}/i915/i915-dsm-epyc7002-7.4-${VER_I915}.tar.gz"
+[ -f "${FW_BUNDLE}" ] || { echo "ERROR: missing vendored firmware bundle"; exit 1; }
 t=$(mktemp -d)
-tar -xzf i915-fw.tar.gz -C "${t}"
+tar -xzf "${FW_BUNDLE}" -C "${t}"
 mkdir -p fwwork/i915
 cp -f "${t}"/firmware/* fwwork/i915/
 rm -rf "${t}"
@@ -89,14 +98,10 @@ rm -rf "${t}"
 cp /tmp/firmware.tgz.new /mnt/rrp3/modules/firmware.tgz
 
 log "[7/10] Replace hdddb with v3.7.140"
-curl -fL --retry 5 --retry-all-errors --retry-delay 2 -o syno_hdd_db.sh \
-  "https://raw.githubusercontent.com/007revad/Synology_HDD_db/v3.7.140/syno_hdd_db.sh"
-curl -fL --retry 5 --retry-all-errors --retry-delay 2 -o install.sh \
-  "https://raw.githubusercontent.com/RROrg/rr-addons/main/hdddb/install.sh"
-grep -m1 'scriptver=' syno_hdd_db.sh
+grep -m1 'scriptver=' "${ASSETS_DIR}/hdddb/hdddb.sh"
 rm -rf hddwork && mkdir -p hddwork/root/usr/bin
-cp install.sh hddwork/install.sh
-cp syno_hdd_db.sh hddwork/root/usr/bin/hdddb.sh
+cp "${ASSETS_DIR}/hdddb/install.sh" hddwork/install.sh
+cp "${ASSETS_DIR}/hdddb/hdddb.sh" hddwork/root/usr/bin/hdddb.sh
 (cd hddwork && tar -czf /tmp/hdddb-all.tgz .)
 cp /tmp/hdddb-all.tgz /mnt/rrp3/addons/hdddb/all.tgz
 ls -lh /mnt/rrp3/addons/hdddb/all.tgz
